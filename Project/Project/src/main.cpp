@@ -402,7 +402,10 @@ public:
 		sphere->init();
 
 		// Setup a game object and its geometry
-		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog);
+		glm::vec3 position = glm::vec3(0.0f);
+		glm::vec3 velocity = glm::vec3(0.0f);
+		glm::vec3 orientation = glm::vec3(0.0f);
+		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation);
 
 		//Cyl Stuff
 		std::vector<float> vertex_cylinder_buffer; //use for the VBO later
@@ -658,10 +661,11 @@ public:
 		//Head 1, Center Head
 		M->pushMatrix();
 		M->loadIdentity();
-		M->translate(vec3(0 + offsetX, -.1, 2 + offsetZ)); //move the plane down a little bit in y space 
+		bunBun->step(deltaTime, M, P);
+		//M->translate(vec3(0 + offsetX, -.1, 2 + offsetZ)); //move the plane down a little bit in y space 
 		//M->rotate( -90* to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
 		// M->rotate(bunnyRotate, vec3(0, 1, 0)); // Make the bunny rotate
-		M->scale(1); //Scale the Head
+		//M->scale(1); //Scale the Head
 		//add uniforms to shader
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
