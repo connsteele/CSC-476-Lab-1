@@ -64,7 +64,7 @@ public:
 	std::shared_ptr<Program> texProg;
 
 	// Access OBJ files
-	shared_ptr<Shape> shape;
+	shared_ptr<Shape> bunnyShape;
 	shared_ptr<Shape> cube;
 	shared_ptr<Shape> sphere;
 
@@ -375,10 +375,10 @@ public:
 		initQuad();
 
 		// Initialize the obj mesh VBOs etc
-		shape = make_shared<Shape>();
-		shape->loadMesh(resourceDirectory + "/bunny.obj");
-		shape->resize();
-		shape->init();
+		bunnyShape = make_shared<Shape>();
+		bunnyShape->loadMesh(resourceDirectory + "/bunny.obj");
+		bunnyShape->resize();
+		bunnyShape->init();
 
 		// Initialize the cube OBJ model
 		cube = make_shared<Shape>();
@@ -649,7 +649,7 @@ public:
 		M->loadIdentity();
 		M->translate(vec3(0 + offsetX, -.1, 2 + offsetZ)); //move the plane down a little bit in y space 
 		//M->rotate( -90* to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		M->rotate(bunnyRotate, vec3(0, 1, 0));
+		// M->rotate(bunnyRotate, vec3(0, 1, 0)); // Make the bunny rotate
 		M->scale(1); //Scale the Head
 		//add uniforms to shader
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
@@ -660,79 +660,79 @@ public:
 		//Set up the Lighting Uniforms, Copper for this
 		SetMaterial(1);
 		//draw
-		shape->draw(prog);
+		bunnyShape->draw(prog);
 		M->popMatrix();
 
 		//Head 2
-		M->pushMatrix();
-		M->loadIdentity();
-		M->translate(vec3(2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
-		M->rotate(bunnyRotate, vec3(0, 1, 0));
-		//M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		M->scale(.7); //Scale the Head
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		//Set up the Lighting Uniforms
-		SetMaterial(2);
-		//draw
-		shape->draw(prog);
-		M->popMatrix();
+		//M->pushMatrix();
+		//M->loadIdentity();
+		//M->translate(vec3(2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
+		//M->rotate(bunnyRotate, vec3(0, 1, 0));
+		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
+		//M->scale(.7); //Scale the Head
+		////add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
+		////Set up the Lighting Uniforms
+		//SetMaterial(2);
+		////draw
+		//bunnyShape->draw(prog);
+		//M->popMatrix();
 
-		//Head 2 Otherside
-		M->pushMatrix();
-		M->loadIdentity();
-		M->translate(vec3(-2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
-		M->rotate(bunnyRotate, vec3(0, 1, 0));
-		//M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		M->scale(.7); //Scale the Head
-					   //add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		//Set up the Lighting Uniforms
-		SetMaterial(2);
-		//draw
-		shape->draw(prog);
-		M->popMatrix();
+		////Head 2 Otherside
+		//M->pushMatrix();
+		//M->loadIdentity();
+		//M->translate(vec3(-2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
+		//M->rotate(bunnyRotate, vec3(0, 1, 0));
+		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
+		//M->scale(.7); //Scale the Head
+		//			   //add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
+		////Set up the Lighting Uniforms
+		//SetMaterial(2);
+		////draw
+		//shape->draw(prog);
+		//M->popMatrix();
 
-		//Head 3
-		M->pushMatrix();
-		M->loadIdentity();
-		M->translate(vec3(4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
-		M->rotate(bunnyRotate, vec3(0, 1, 0));
-		//M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		M->scale(.5); //Scale the Head
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//Set up the Lighting Uniforms
-		SetMaterial(0);
-		//draw
-		shape->draw(prog);
-		M->popMatrix();
+		////Head 3
+		//M->pushMatrix();
+		//M->loadIdentity();
+		//M->translate(vec3(4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
+		//M->rotate(bunnyRotate, vec3(0, 1, 0));
+		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
+		//M->scale(.5); //Scale the Head
+		////add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		////Set up the Lighting Uniforms
+		//SetMaterial(0);
+		////draw
+		//shape->draw(prog);
+		//M->popMatrix();
 
-		//Head 3 Otherside
-		M->pushMatrix();
-		M->loadIdentity();
-		// Order: T * R * S
-		M->translate(vec3(-4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
-		M->rotate(bunnyRotate, vec3(0, 1, 0));
-		//M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		M->scale(.5); //Scale the Head
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//Set up the Lighting Uniforms
-		SetMaterial(0);
-		//draw
-		shape->draw(prog);
-		M->popMatrix();
+		////Head 3 Otherside
+		//M->pushMatrix();
+		//M->loadIdentity();
+		//// Order: T * R * S
+		//M->translate(vec3(-4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
+		//M->rotate(bunnyRotate, vec3(0, 1, 0));
+		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
+		//M->scale(.5); //Scale the Head
+		////add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		////Set up the Lighting Uniforms
+		//SetMaterial(0);
+		////draw
+		//shape->draw(prog);
+		//M->popMatrix();
 
 		prog->unbind();
 
@@ -774,27 +774,27 @@ public:
 
 
 		//Render the TV scene
-		glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[0]);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		renderGroundPlane(M, P, 1); //draw the ground plane
-		renderAnimSphere(M, P, 1, 0, 0); //draw the hierarchical modeled animated spheres
-		renderAnimSphere(M, P, 1, 8, 0);
-		renderAnimSphere(M, P, 1, 0, -2); //draw the hierarchical modeled animated spheres
-		renderAnimSphere(M, P, 1, 8, -2);
-		renderAnimSphere(M, P, 1, 2.5, 2.7);
-		renderAnimSphere(M, P, 1, 3.85, 2.7);
-		renderAnimSphere(M, P, 1, 5.5, 2.7);
-		renderAnimSphere(M, P, 1, 2.5, -4);
-		renderAnimSphere(M, P, 1, 3.85, -4);
-		renderAnimSphere(M, P, 1, 5.5, -4);
+		//glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[0]);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//renderGroundPlane(M, P, 1); //draw the ground plane
+		//renderAnimSphere(M, P, 1, 0, 0); //draw the hierarchical modeled animated spheres
+		//renderAnimSphere(M, P, 1, 8, 0);
+		//renderAnimSphere(M, P, 1, 0, -2); //draw the hierarchical modeled animated spheres
+		//renderAnimSphere(M, P, 1, 8, -2);
+		//renderAnimSphere(M, P, 1, 2.5, 2.7);
+		//renderAnimSphere(M, P, 1, 3.85, 2.7);
+		//renderAnimSphere(M, P, 1, 5.5, 2.7);
+		//renderAnimSphere(M, P, 1, 2.5, -4);
+		//renderAnimSphere(M, P, 1, 3.85, -4);
+		//renderAnimSphere(M, P, 1, 5.5, -4);
 
-		renderNephs(M, P, 1, 0, -3); //Render the Neph Heads, if you use 0 instead of 1 for all these the TV will draw from the user POV
-		renderNephs(M, P, 1, 0, 0);
+		////renderNephs(M, P, 1, 0, -3); //Render the Neph Heads, if you use 0 instead of 1 for all these the TV will draw from the user POV
+		//renderNephs(M, P, 1, 0, 0);
 
-		//Prep texture & buffer 
-		glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[1]);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		renderTV(P, M, texBuf[0]);
+		////Prep texture & buffer 
+		//glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[1]);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//renderTV(P, M, texBuf[0]);
 
 
 		/*Draw the actual scene*/
@@ -802,21 +802,21 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		M->pushMatrix();
 		renderGroundPlane(M, P, 0); //draw the ground plane
-		renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
-		renderAnimSphere(M, P, 0, 8, 0);
-		renderAnimSphere(M, P, 0, 0, -2); //draw the hierarchical modeled animated spheres
-		renderAnimSphere(M, P, 0, 8, -2);
-		renderAnimSphere(M, P, 0, 2.5, 2.7);
-		renderAnimSphere(M, P, 0, 3.85, 2.7);
-		renderAnimSphere(M, P, 0, 5.5, 2.7);
-		renderAnimSphere(M, P, 0, 2.5, -4);
-		renderAnimSphere(M, P, 0, 3.85, -4);
-		renderAnimSphere(M, P, 0, 5.5, -4);
+		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
+		//renderAnimSphere(M, P, 0, 8, 0);
+		//renderAnimSphere(M, P, 0, 0, -2); //draw the hierarchical modeled animated spheres
+		//renderAnimSphere(M, P, 0, 8, -2);
+		//renderAnimSphere(M, P, 0, 2.5, 2.7);
+		//renderAnimSphere(M, P, 0, 3.85, 2.7);
+		//renderAnimSphere(M, P, 0, 5.5, 2.7);
+		//renderAnimSphere(M, P, 0, 2.5, -4);
+		//renderAnimSphere(M, P, 0, 3.85, -4);
+		//renderAnimSphere(M, P, 0, 5.5, -4);
 
 
 
 		M->pushMatrix();
-		renderNephs(M, P, 0, 0, -3); //Render the Neph Heads
+		// renderNephs(M, P, 0, 0, -3); //Render the Neph Heads
 		renderNephs(M, P, 0, 0, 0);
 
 		M->popMatrix();
@@ -825,7 +825,7 @@ public:
 		M->translate(vec3(0, .75, 9)); //The position of the TV
 		M->rotate(-15 * to_radians, vec3(1, 0, 0));
 		M->scale(vec3(5, 1, 5)); //maintain 1:1 aspect ratio
-		renderTV(P, M, texBuf[0]);
+		// renderTV(P, M, texBuf[0]); // Render the tv plane
 		M->popMatrix();
 
 		M->popMatrix();

@@ -48,6 +48,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="resources\mirror_frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\mirror_vert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\simple_frag.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\simple_vert.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseCode\GLSL.h">

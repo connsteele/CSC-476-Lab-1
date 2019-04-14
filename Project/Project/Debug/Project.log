@@ -23,21 +23,6 @@ c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(228)
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(229): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(230): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(546): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(672): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(690): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(784): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(785): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(786): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(787): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(788): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(789): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(809): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(810): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(811): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(812): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(813): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(814): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(894): warning C4305: '+=': truncation from 'double' to 'float'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(906): warning C4305: '+=': truncation from 'double' to 'float'
-  LINK : C:\Users\gosus\Documents\CP-School\CSC476\Lab1\Project\Debug\Project.exe not found or not built by the last incremental link; performing full link
   Project.vcxproj -> C:\Users\gosus\Documents\CP-School\CSC476\Lab1\Project\Debug\Project.exe

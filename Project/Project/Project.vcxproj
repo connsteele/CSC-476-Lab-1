@@ -130,6 +130,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="resources\mirror_frag.glsl" />
+    <None Include="resources\mirror_vert.glsl" />
+    <None Include="resources\simple_frag.glsl" />
+    <None Include="resources\simple_vert.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseCode\GLSL.h" />
