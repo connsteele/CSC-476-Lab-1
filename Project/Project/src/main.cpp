@@ -14,6 +14,7 @@
 #include "BaseCode/WindowManager.h"
 #include "BaseCode/GLTextureWriter.h"
 #include "BaseCode/MatrixStack.h"
+#include "GameObject.h" // Our Game Object Class
 
 
 #include <glm/gtc/type_ptr.hpp>
@@ -73,6 +74,8 @@ public:
 	shared_ptr<Shape> cube;
 	shared_ptr<Shape> sphere;
 
+	shared_ptr<GameObject> bunBun;
+
 	// Contains vertex information for OpenGL
 	GLuint VertexArrayID;
 
@@ -112,7 +115,7 @@ public:
 		//Keys to control the camera movement
 		else if (key == GLFW_KEY_W)
 		{
-			//center = center + (camMove * movespd);
+			center = center + (camMove * movespd);
 			eye = eye + (camMove * movespd);
 
 			if (eye.y <= 0)
@@ -124,20 +127,20 @@ public:
 		else if (key == GLFW_KEY_A)
 		{
 			//Left
-			//center += cross(up, camMove) * movespd;
+			center += cross(up, camMove) * movespd;
 			eye += cross(up, camMove) * movespd;
 
 		}
 		else if (key == GLFW_KEY_D)
 		{
 			//Right
-			//center -= cross(up, camMove) * movespd;
+			center -= cross(up, camMove) * movespd;
 			eye -= cross(up, camMove) * movespd;
 
 		}
 		else if (key == GLFW_KEY_S)
 		{
-			//center = center - (movespd * camMove);
+			center = center - (movespd * camMove);
 			//Backward
 			eye = eye - (camMove * movespd);
 
@@ -397,6 +400,9 @@ public:
 		sphere->loadMesh(resourceDirectory + "/sphere.obj");
 		sphere->resize();
 		sphere->init();
+
+		// Setup a game object and its geometry
+		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog);
 
 		//Cyl Stuff
 		std::vector<float> vertex_cylinder_buffer; //use for the VBO later
@@ -665,79 +671,9 @@ public:
 		//Set up the Lighting Uniforms, Copper for this
 		SetMaterial(1);
 		//draw
-		bunnyShape->draw(prog);
-		M->popMatrix();
-
-		//Head 2
-		//M->pushMatrix();
-		//M->loadIdentity();
-		//M->translate(vec3(2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
-		//M->rotate(bunnyRotate, vec3(0, 1, 0));
-		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		//M->scale(.7); //Scale the Head
-		////add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		////Set up the Lighting Uniforms
-		//SetMaterial(2);
-		////draw
 		//bunnyShape->draw(prog);
-		//M->popMatrix();
-
-		////Head 2 Otherside
-		//M->pushMatrix();
-		//M->loadIdentity();
-		//M->translate(vec3(-2 + offsetX, -.3, 2 + offsetZ)); //move the plane down a little bit in y space 
-		//M->rotate(bunnyRotate, vec3(0, 1, 0));
-		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		//M->scale(.7); //Scale the Head
-		//			   //add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		////Set up the Lighting Uniforms
-		//SetMaterial(2);
-		////draw
-		//shape->draw(prog);
-		//M->popMatrix();
-
-		////Head 3
-		//M->pushMatrix();
-		//M->loadIdentity();
-		//M->translate(vec3(4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
-		//M->rotate(bunnyRotate, vec3(0, 1, 0));
-		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		//M->scale(.5); //Scale the Head
-		////add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		////Set up the Lighting Uniforms
-		//SetMaterial(0);
-		////draw
-		//shape->draw(prog);
-		//M->popMatrix();
-
-		////Head 3 Otherside
-		//M->pushMatrix();
-		//M->loadIdentity();
-		//// Order: T * R * S
-		//M->translate(vec3(-4 + offsetX, -.5, 2 + offsetZ)); //move the plane down a little bit in y space 
-		//M->rotate(bunnyRotate, vec3(0, 1, 0));
-		////M->rotate(-90 * to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		//M->scale(.5); //Scale the Head
-		////add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		////Set up the Lighting Uniforms
-		//SetMaterial(0);
-		////draw
-		//shape->draw(prog);
-		//M->popMatrix();
+		bunBun->DrawGameObj();
+		M->popMatrix();
 
 		prog->unbind();
 

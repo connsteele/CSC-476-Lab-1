@@ -45,6 +45,9 @@
     <ClCompile Include="src\BaseCode\WindowManager.cpp">
       <Filter>Base Code</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="src\BaseCode\WindowManager.h">
       <Filter>Base Code</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
