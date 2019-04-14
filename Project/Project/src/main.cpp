@@ -8,12 +8,12 @@
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "stb_image.h"
 
-#include "GLSL.h"
-#include "Program.h"
-#include "Shape.h"
-#include "WindowManager.h"
-#include "GLTextureWriter.h"
-#include "MatrixStack.h"
+#include "BaseCode/GLSL.h"
+#include "BaseCode/Program.h"
+#include "BaseCode/Shape.h"
+#include "BaseCode/WindowManager.h"
+#include "BaseCode/GLTextureWriter.h"
+#include "BaseCode/MatrixStack.h"
 
 
 #include <glm/gtc/type_ptr.hpp>

@@ -13,63 +13,63 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Base Code">
+      <UniqueIdentifier>{9e658727-1bdd-4e27-b410-a55aa29947dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GLSL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GLTextureWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MatrixStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Program.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Shape.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\WindowManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="resources\src\glad.c">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\GLSL.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\GLTextureWriter.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\MatrixStack.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\Program.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\Shape.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\Texture.cpp">
+      <Filter>Base Code</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BaseCode\WindowManager.cpp">
+      <Filter>Base Code</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GLSL.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\GLSL.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\GLTextureWriter.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\GLTextureWriter.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\MatrixStack.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\MatrixStack.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\Program.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\Program.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\Shape.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\Shape.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\Texture.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\Texture.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
-    <ClInclude Include="src\WindowManager.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resources\include\stb_image_write.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="src\BaseCode\WindowManager.h">
+      <Filter>Base Code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

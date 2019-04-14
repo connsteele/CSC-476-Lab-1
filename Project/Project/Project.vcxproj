@@ -119,27 +119,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="resources\src\glad.c" />
-    <ClCompile Include="src\GLSL.cpp" />
-    <ClCompile Include="src\GLTextureWriter.cpp" />
+    <ClCompile Include="src\BaseCode\GLSL.cpp" />
+    <ClCompile Include="src\BaseCode\GLTextureWriter.cpp" />
+    <ClCompile Include="src\BaseCode\MatrixStack.cpp" />
+    <ClCompile Include="src\BaseCode\Program.cpp" />
+    <ClCompile Include="src\BaseCode\Shape.cpp" />
+    <ClCompile Include="src\BaseCode\Texture.cpp" />
+    <ClCompile Include="src\BaseCode\WindowManager.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\MatrixStack.cpp" />
-    <ClCompile Include="src\Program.cpp" />
-    <ClCompile Include="src\Shape.cpp" />
-    <ClCompile Include="src\Texture.cpp" />
-    <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resources\include\stb_image_write.h" />
-    <ClInclude Include="src\GLSL.h" />
-    <ClInclude Include="src\GLTextureWriter.h" />
-    <ClInclude Include="src\MatrixStack.h" />
-    <ClInclude Include="src\Program.h" />
-    <ClInclude Include="src\Shape.h" />
-    <ClInclude Include="src\Texture.h" />
-    <ClInclude Include="src\WindowManager.h" />
+    <ClInclude Include="src\BaseCode\GLSL.h" />
+    <ClInclude Include="src\BaseCode\GLTextureWriter.h" />
+    <ClInclude Include="src\BaseCode\MatrixStack.h" />
+    <ClInclude Include="src\BaseCode\Program.h" />
+    <ClInclude Include="src\BaseCode\Shape.h" />
+    <ClInclude Include="src\BaseCode\Texture.h" />
+    <ClInclude Include="src\BaseCode\WindowManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
