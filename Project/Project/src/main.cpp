@@ -24,13 +24,18 @@ using namespace glm;
 
 //Globals
 
+//Camera Timing
+float deltaTime = 0.0f, lastTime = glfwGetTime();
+float lastFrame = 0.0f;
+int nbFrames = 0;
+
 
 //Camera:
 vec3 eye = vec3(0, 0.5, 0); //was originally 0,0,0
 vec3 up = vec3(0, 1, 0);
 
 vec3 center;
-const vec3 movespd = vec3(.2);	// movespd for each keypress. equivalent to .2, .2, .2
+//const vec3 movespd = vec3(.2);	// movespd for each keypress. equivalent to .2, .2, .2
 
 //Animation:
 float orbRotate = 0.0;
@@ -97,6 +102,9 @@ public:
 
 	void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 	{
+
+		float movespd = 20.0f * deltaTime;
+
 		if (key == GLFW_KEY_ESCAPE && (action == GLFW_PRESS || action == GLFW_REPEAT))
 		{
 			glfwSetWindowShouldClose(window, GL_TRUE);
@@ -104,7 +112,7 @@ public:
 		//Keys to control the camera movement
 		else if (key == GLFW_KEY_W)
 		{
-			center = center + (camMove * movespd);
+			//center = center + (camMove * movespd);
 			eye = eye + (camMove * movespd);
 
 			if (eye.y <= 0)
@@ -116,20 +124,20 @@ public:
 		else if (key == GLFW_KEY_A)
 		{
 			//Left
-			center += cross(up, camMove) * movespd;
+			//center += cross(up, camMove) * movespd;
 			eye += cross(up, camMove) * movespd;
 
 		}
 		else if (key == GLFW_KEY_D)
 		{
 			//Right
-			center -= cross(up, camMove) * movespd;
+			//center -= cross(up, camMove) * movespd;
 			eye -= cross(up, camMove) * movespd;
 
 		}
 		else if (key == GLFW_KEY_S)
 		{
-			center = center - (movespd * camMove);
+			//center = center - (movespd * camMove);
 			//Backward
 			eye = eye - (camMove * movespd);
 
@@ -745,6 +753,20 @@ public:
 		int width, height;
 		glfwGetFramebufferSize(windowManager->getHandle(), &width, &height);
 		glViewport(0, 0, width, height);
+
+		// Set Delta Time and lastFrame
+		float currentFrame = glfwGetTime();
+		float currentTime = glfwGetTime();
+		nbFrames += 1;
+
+		if (currentTime - lastTime >= 1.0 ) {
+			printf("MS/FPS: %f    FPS: %f\n", 1000.0 / double(nbFrames) , double(nbFrames));
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
+
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
 
 		// Clear framebuffer.
