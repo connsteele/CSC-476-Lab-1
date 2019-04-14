@@ -161,9 +161,6 @@ public:
 		{
 			mouseDown = false;
 		}
-
-
-
 	}
 
 
@@ -773,62 +770,20 @@ public:
 		P->perspective(45.0f, aspect, 0.01f, 100.0f);
 
 
-		//Render the TV scene
-		//glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[0]);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//renderGroundPlane(M, P, 1); //draw the ground plane
-		//renderAnimSphere(M, P, 1, 0, 0); //draw the hierarchical modeled animated spheres
-		//renderAnimSphere(M, P, 1, 8, 0);
-		//renderAnimSphere(M, P, 1, 0, -2); //draw the hierarchical modeled animated spheres
-		//renderAnimSphere(M, P, 1, 8, -2);
-		//renderAnimSphere(M, P, 1, 2.5, 2.7);
-		//renderAnimSphere(M, P, 1, 3.85, 2.7);
-		//renderAnimSphere(M, P, 1, 5.5, 2.7);
-		//renderAnimSphere(M, P, 1, 2.5, -4);
-		//renderAnimSphere(M, P, 1, 3.85, -4);
-		//renderAnimSphere(M, P, 1, 5.5, -4);
-
-		////renderNephs(M, P, 1, 0, -3); //Render the Neph Heads, if you use 0 instead of 1 for all these the TV will draw from the user POV
-		//renderNephs(M, P, 1, 0, 0);
-
-		////Prep texture & buffer 
-		//glBindFramebuffer(GL_FRAMEBUFFER, frameBuf[1]);
-		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//renderTV(P, M, texBuf[0]);
-
-
 		/*Draw the actual scene*/
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		M->pushMatrix();
+		M->pushMatrix(); // Matrix for the Scene
 		renderGroundPlane(M, P, 0); //draw the ground plane
+
 		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
-		//renderAnimSphere(M, P, 0, 8, 0);
-		//renderAnimSphere(M, P, 0, 0, -2); //draw the hierarchical modeled animated spheres
-		//renderAnimSphere(M, P, 0, 8, -2);
-		//renderAnimSphere(M, P, 0, 2.5, 2.7);
-		//renderAnimSphere(M, P, 0, 3.85, 2.7);
-		//renderAnimSphere(M, P, 0, 5.5, 2.7);
-		//renderAnimSphere(M, P, 0, 2.5, -4);
-		//renderAnimSphere(M, P, 0, 3.85, -4);
-		//renderAnimSphere(M, P, 0, 5.5, -4);
-
-
 
 		M->pushMatrix();
-		// renderNephs(M, P, 0, 0, -3); //Render the Neph Heads
 		renderNephs(M, P, 0, 0, 0);
-
-		M->popMatrix();
-		//TV Location
-		M->pushMatrix();
-		M->translate(vec3(0, .75, 9)); //The position of the TV
-		M->rotate(-15 * to_radians, vec3(1, 0, 0));
-		M->scale(vec3(5, 1, 5)); //maintain 1:1 aspect ratio
-		// renderTV(P, M, texBuf[0]); // Render the tv plane
 		M->popMatrix();
 
-		M->popMatrix();
+
+		M->popMatrix(); // Pop Scene Matrix
 	}
 
 
