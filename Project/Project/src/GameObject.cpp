@@ -2,7 +2,7 @@
 
 
 
-GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, glm::vec3 vel, glm::vec3 orient)
+GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient)
 {
 	this->nameObj = gameObjName;
 	//-- Setup the Model Geometry
@@ -26,8 +26,15 @@ void GameObject::DrawGameObj()
 
 void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P)
 {
-	static float z = 0.0f;
-	M->translate(glm::vec3(0.0f, 0.0f, z += 0.0025f));
+	// Simple move
+	/*static float z = 0.0f;
+	M->translate(glm::vec3(0.0f, 0.0f, z += 0.0025f));*/
+
+	static float elapsedTime = 0.0f;
+	elapsedTime += dt;
+	position = velocity * orientation * elapsedTime;
+	M->translate(position);
+	//M->rotate(orientation);
 	
 }
 

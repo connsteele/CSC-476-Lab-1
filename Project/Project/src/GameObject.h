@@ -15,9 +15,10 @@ public:
 	std::shared_ptr<Shape> objModel;
 	std::shared_ptr<Program> curShaderProg;
 
-	glm::vec3 position, velocity, orientation;
+	glm::vec3 position, orientation;
+	float velocity;
 
-	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, glm::vec3 vel, glm::vec3 orient);
+	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient);
 	void DrawGameObj();
 	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P);
 	~GameObject(); // Destroyer
