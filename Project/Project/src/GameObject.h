@@ -26,10 +26,11 @@ public:
 	glm::vec3 bboxSize;
 	glm::vec3 bboxCenter;
 	glm::mat4 bboxTransform;
+	bool isTerrain; //If terrain change bounding box behavior
 
 
 
-	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient);
+	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain);
 	void DrawGameObj();
 	void updateBbox();
 	void initBbox();

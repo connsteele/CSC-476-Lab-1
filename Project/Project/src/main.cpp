@@ -74,7 +74,7 @@ public:
 	shared_ptr<Shape> cube;
 	shared_ptr<Shape> sphere;
 
-	shared_ptr<GameObject> bunBun;
+	shared_ptr<GameObject> bunBun, groundbox;
 
 	// Contains vertex information for OpenGL
 	GLuint VertexArrayID;
@@ -395,6 +395,8 @@ public:
 		cube->init();
 
 
+
+
 		// Initialize the sphere OBJ model
 		sphere = make_shared<Shape>();
 		sphere->loadMesh(resourceDirectory + "/sphere.obj");
@@ -405,7 +407,15 @@ public:
 		glm::vec3 position = glm::vec3(0.0f);
 		float velocity = 1.0f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
-		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation);
+		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+
+		// Setup new Ground plane
+		position = glm::vec3(0.0f);
+		velocity = 0.0f;
+		orientation = glm::vec3(0.0f, 0.0f, 0.0f);
+		groundbox = make_shared<GameObject>("groundbox", "cube.obj", resourceDirectory, prog, position, velocity, orientation, true);
+
+
 
 		//Cyl Stuff
 		std::vector<float> vertex_cylinder_buffer; //use for the VBO later
@@ -521,6 +531,7 @@ public:
 		M->loadIdentity();
 		M->translate(vec3(0, -1, 0)); //move the plane down a little bit in y space 
 		M->scale(vec3(40, .1, 40)); // turn the cube into a plane
+		groundbox->step(deltaTime, M, P, camLoc, center, up);
 		//add uniforms to shader
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
@@ -530,7 +541,8 @@ public:
 		//Set up the Lighting Uniforms, Copper for this
 		SetMaterial(3);
 		//draw
-		cube->draw(prog);
+		//cube->draw(prog);
+		groundbox->DrawGameObj();
 		M->popMatrix();
 
 		prog->unbind();
@@ -640,6 +652,12 @@ public:
 
 		return;
 	}
+
+	void renderWorldBox() {
+
+	}
+
+
 
 	void renderNephs(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV, int offsetX, int offsetZ)
 	{

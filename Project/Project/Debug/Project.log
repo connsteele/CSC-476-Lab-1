@@ -1,28 +1,2 @@
 ﻿  GameObject.cpp
-  main.cpp
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(29): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(57): warning C4305: 'initializing': truncation from 'double' to 'const float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(190): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(191): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(204): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(205): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(218): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(219): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(220): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(224): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(225): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(226): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(230): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(231): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(232): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(233): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(236): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(237): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(238): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(560): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(695): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(696): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(808): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(820): warning C4305: '+=': truncation from 'double' to 'float'
-  Generating Code...
   Project.vcxproj -> C:\Users\gosus\Documents\CP-School\CSC476\Lab1\Project\Debug\Project.exe

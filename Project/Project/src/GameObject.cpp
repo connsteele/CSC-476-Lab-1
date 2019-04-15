@@ -3,7 +3,7 @@
 // Connor Steele and Chris Gix Game Object Implementation
 
 
-GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient)
+GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain)
 {
 	this->nameObj = gameObjName;
 	//-- Setup the Model Geometry
@@ -20,6 +20,7 @@ GameObject::GameObject(const std::string& gameObjName, const std::string& fileNa
 	this->position = pos;
 	this->velocity = vel;
 	this->orientation = orient;
+	this->isTerrain = isTerrain;
 
 
 }
@@ -38,21 +39,18 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	M->translate(position);
 	//updateBbox(M, P, camLoc, center, up);
 	
-	//update bbox properties
 	GLfloat min_x, max_x,
 		min_y, max_y,
 		min_z, max_z;
-
 	// Get the position buffer from the model
 	std::vector<float> modelVertPosBuf = objModel->getPosBuf();
-
 	// Set up initial Values
 	min_x = max_x = modelVertPosBuf[0];
 	min_y = max_y = modelVertPosBuf[1];
 	min_z = max_z = modelVertPosBuf[2];
 
 	// Walk thru all models vertices and fit mins and maxes
-	for (size_t i = 0; i < modelVertPosBuf.size() / 3 ; i++)
+	for (size_t i = 0; i < modelVertPosBuf.size() / 3; i++)
 	{
 		if (modelVertPosBuf[3 * i + 0] < min_x) min_x = modelVertPosBuf[3 * i + 0];
 		if (modelVertPosBuf[3 * i + 0] > max_x) max_x = modelVertPosBuf[3 * i + 0];
@@ -63,11 +61,24 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 		if (modelVertPosBuf[3 * i + 2] < min_z) min_z = modelVertPosBuf[3 * i + 2];
 		if (modelVertPosBuf[3 * i + 2] > max_z) max_z = modelVertPosBuf[3 * i + 2];
 	}
-
-	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
-	bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
-	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
-
+	// If the game object is terrain move the bounding box up
+	switch (isTerrain)
+	{
+		case true:
+			printf("Is terrain");
+			bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z) * 40.0f; // Fix this magic number, is tied to scale that is set in main for this
+			bboxCenter = position + glm::vec3(0.0, 39, 0.0); // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
+			bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
+			break;
+		case false:
+			bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+			bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
+			bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
+			break;
+		/*default:
+			break;*/
+	}
+	
 }
 
 // Update the center of the bounding box for the model
