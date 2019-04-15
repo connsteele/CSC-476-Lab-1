@@ -65,7 +65,6 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	switch (isTerrain)
 	{
 		case true:
-			printf("Is terrain");
 			bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z) * 40.0f; // Fix this magic number, is tied to scale that is set in main for this
 			bboxCenter = position + glm::vec3(0.0, 39, 0.0); // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
 			bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
