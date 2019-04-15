@@ -1,5 +1,7 @@
 #pragma once
 
+// Connor Steele and Chris Gix Game Object Implementation
+
 #include <iostream>
 #include "BaseCode/Shape.h"
 #include "BaseCode/Program.h"

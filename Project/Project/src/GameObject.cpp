@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-
+// Connor Steele and Chris Gix Game Object Implementation
 
 
 GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient)
