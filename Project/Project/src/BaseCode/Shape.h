@@ -20,6 +20,9 @@ public:
 	void resize();
 	void draw(const std::shared_ptr<Program> prog) const;
 
+	// Connor and Chris' Methods
+	std::vector<float> getPosBuf();
+
 private:
 
 	std::vector<unsigned int> eleBuf;

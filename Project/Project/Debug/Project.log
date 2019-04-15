@@ -1,4 +1,5 @@
 ﻿  GameObject.cpp
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\gameobject.cpp(130): warning C4018: '<': signed/unsigned mismatch
   main.cpp
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(29): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(57): warning C4305: 'initializing': truncation from 'double' to 'const float'
@@ -20,9 +21,9 @@ c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(236)
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(237): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(238): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(560): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(698): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(699): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(811): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(823): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(740): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(741): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(853): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(865): warning C4305: '+=': truncation from 'double' to 'float'
   Generating Code...
   Project.vcxproj -> C:\Users\gosus\Documents\CP-School\CSC476\Lab1\Project\Debug\Project.exe

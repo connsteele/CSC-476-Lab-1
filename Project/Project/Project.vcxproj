@@ -137,6 +137,7 @@
     <None Include="resources\simple_vert.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resources\include\tiny_obj_loader.h" />
     <ClInclude Include="src\BaseCode\GLSL.h" />
     <ClInclude Include="src\BaseCode\GLTextureWriter.h" />
     <ClInclude Include="src\BaseCode\MatrixStack.h" />

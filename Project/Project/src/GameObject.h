@@ -4,6 +4,7 @@
 #include "BaseCode/Shape.h"
 #include "BaseCode/Program.h"
 #include "glm/glm.hpp"
+#include <glm/gtc/type_ptr.hpp>
 #include "glm/vec3.hpp"
 #include "BaseCode/MatrixStack.h"
 
@@ -17,10 +18,19 @@ public:
 
 	glm::vec3 position, orientation;
 	float velocity;
+	GLuint vbo_vertices;
+	GLuint ibo_elements;
+
 
 	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient);
 	void DrawGameObj();
-	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P);
+	void updateBbox(std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
+	void initBbox();
+	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
 	~GameObject(); // Destroyer
+
+private:
+	
+
 };
 
