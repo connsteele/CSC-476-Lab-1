@@ -21,6 +21,11 @@ public:
 	GLuint vbo_vertices;
 	GLuint ibo_elements;
 
+	glm::vec3 bboxSize;
+	glm::vec3 bboxCenter;
+	glm::mat4 bboxTransform;
+
+
 
 	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient);
 	void DrawGameObj();

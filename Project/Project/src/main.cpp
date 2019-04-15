@@ -682,7 +682,12 @@ public:
 		//bunnyShape->draw(prog); //old
 
 		bunBun->DrawGameObj();
+		
+
 		// Draw the bbox
+		M->pushMatrix();
+		//M->scale(bunBun->bboxSize);
+		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(bunBun->bboxTransform));
 		glBindBuffer(GL_ARRAY_BUFFER, bunBun->vbo_vertices);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(
@@ -702,6 +707,9 @@ public:
 
 		glDisableVertexAttribArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		M->popMatrix();
+
+		M->popMatrix();
 
 		//glDeleteBuffers(1, &vbo_vertices);
 		//glDeleteBuffers(1, &ibo_elements);
@@ -719,7 +727,7 @@ public:
 		glDisableVertexAttribArray(0);*/
 		//
 
-		M->popMatrix();
+		//M->popMatrix();
 
 		prog->unbind();
 

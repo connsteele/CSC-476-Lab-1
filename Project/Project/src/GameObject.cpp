@@ -37,6 +37,36 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	M->translate(position);
 	//updateBbox(M, P, camLoc, center, up);
 	
+	//update bbox properties
+	GLfloat min_x, max_x,
+		min_y, max_y,
+		min_z, max_z;
+
+	// Get the position buffer from the model
+	std::vector<float> modelVertPosBuf = objModel->getPosBuf();
+
+	// Set up initial Values
+	min_x = max_x = modelVertPosBuf[0];
+	min_y = max_y = modelVertPosBuf[1];
+	min_z = max_z = modelVertPosBuf[2];
+
+	// Fit mins and maxes to the models vertices and go through all the vertices
+	for (size_t i = 0; i < modelVertPosBuf.size() / 3 ; i++)
+	{
+		if (modelVertPosBuf[3 * i + 0] < min_x) min_x = modelVertPosBuf[3 * i + 0];
+		if (modelVertPosBuf[3 * i + 0] > max_x) max_x = modelVertPosBuf[3 * i + 0];
+
+		if (modelVertPosBuf[3 * i + 1] < min_y) min_y = modelVertPosBuf[3 * i + 1];
+		if (modelVertPosBuf[3 * i + 1] > max_y) max_y = modelVertPosBuf[3 * i + 1];
+
+		if (modelVertPosBuf[3 * i + 2] < min_z) min_z = modelVertPosBuf[3 * i + 2];
+		if (modelVertPosBuf[3 * i + 2] > max_z) max_z = modelVertPosBuf[3 * i + 2];
+	}
+
+	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+	bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
+	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
+
 }
 
 void GameObject::updateBbox(std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up)
@@ -127,16 +157,21 @@ void GameObject::initBbox()
 	min_z = max_z = modelVertPosBuf[2];
 
 	// Fit mins and maxes to the models vertices
-	for (int i = 0; i < modelVertPosBuf.size(); i += 3)
+	for (size_t i = 0; i < modelVertPosBuf.size() / 3; i++)
 	{
-		if (modelVertPosBuf[i] < min_x) min_x = modelVertPosBuf[i];
-		if (modelVertPosBuf[i] > max_x) max_x = modelVertPosBuf[i];
-		if (modelVertPosBuf[i] < min_y) min_y = modelVertPosBuf[i + 1];
-		if (modelVertPosBuf[i] > max_y) max_y = modelVertPosBuf[i + 1];
-		if (modelVertPosBuf[i] < min_z) min_z = modelVertPosBuf[i + 2];
-		if (modelVertPosBuf[i] > max_z) max_z = modelVertPosBuf[i + 2];
+		if (modelVertPosBuf[3 * i + 0] < min_x) min_x = modelVertPosBuf[3 * i + 0];
+		if (modelVertPosBuf[3 * i + 0] > max_x) max_x = modelVertPosBuf[3 * i + 0];
+
+		if (modelVertPosBuf[3 * i + 1] < min_y) min_y = modelVertPosBuf[3 * i + 1];
+		if (modelVertPosBuf[3 * i + 1] > max_y) max_y = modelVertPosBuf[3 * i + 1];
+
+		if (modelVertPosBuf[3 * i + 2] < min_z) min_z = modelVertPosBuf[3 * i + 2];
+		if (modelVertPosBuf[3 * i + 2] > max_z) max_z = modelVertPosBuf[3 * i + 2];
 	}
 
+	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+	bboxCenter = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
+	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
 
 }
 
