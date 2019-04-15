@@ -29,7 +29,7 @@ public:
 
 	GameObject(const std::string& name, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient);
 	void DrawGameObj();
-	void updateBbox(std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
+	void updateBbox();
 	void initBbox();
 	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
 	~GameObject(); // Destroyer

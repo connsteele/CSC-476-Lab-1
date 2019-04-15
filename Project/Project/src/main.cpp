@@ -658,76 +658,23 @@ public:
 
 
 
-		//Head 1, Center Head
+		// Bunny
 		M->pushMatrix();
 		M->loadIdentity();
 
-		// Update the position of the rabbit based on velocity, time elapsed
+		// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
 		bunBun->step(deltaTime, M, P, camLoc, center, up);
-
-
-		//M->translate(vec3(0 + offsetX, -.1, 2 + offsetZ)); //move the plane down a little bit in y space 
-		//M->rotate( -90* to_radians, vec3(1, 0, 0)); //Rotate the Head, dont need to convert to rads for rotation to work
-		// M->rotate(bunnyRotate, vec3(0, 1, 0)); // Make the bunny rotate
-		//M->scale(1); //Scale the Head
 		//add uniforms to shader
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
 		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		//glUniform3f(prog->getUniform("eye"), 0, 10, 0);
-		//Set up the Lighting Uniforms, Copper for this
 		SetMaterial(1);
-		//draw
-		//bunnyShape->draw(prog); //old
-
-		bunBun->DrawGameObj();
-		
-
-		// Draw the bbox
-		M->pushMatrix();
-		//M->scale(bunBun->bboxSize);
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(bunBun->bboxTransform));
-		glBindBuffer(GL_ARRAY_BUFFER, bunBun->vbo_vertices);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(
-			0,  // attribute
-			4,                  // number of elements per vertex, here (x,y,z,w)
-			GL_FLOAT,           // the type of each element
-			GL_FALSE,           // take our values as-is
-			0,                  // no extra data between each position
-			0                   // offset of first element
-		);
-
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bunBun->ibo_elements);
-		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-		glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		glDisableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		bunBun->DrawGameObj(); // Draw the bunny model and render bbox
 		M->popMatrix();
 
-		M->popMatrix();
-
-		//glDeleteBuffers(1, &vbo_vertices);
-		//glDeleteBuffers(1, &ibo_elements);
 
 
-		// render tv draw code
-		/*glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(eye, center, up)));
-		glUniform1i(texProg->getUniform("tex"), 0);
-		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(texProg->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glDisableVertexAttribArray(0);*/
-		//
-
-		//M->popMatrix();
 
 		prog->unbind();
 

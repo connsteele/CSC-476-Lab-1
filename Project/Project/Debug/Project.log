@@ -20,9 +20,9 @@ c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(236)
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(237): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(238): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
 c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(560): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(748): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(749): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(861): warning C4305: '+=': truncation from 'double' to 'float'
-c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(873): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(695): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(696): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(808): warning C4305: '+=': truncation from 'double' to 'float'
+c:\users\gosus\documents\cp-school\csc476\lab1\project\project\src\main.cpp(820): warning C4305: '+=': truncation from 'double' to 'float'
   Generating Code...
   Project.vcxproj -> C:\Users\gosus\Documents\CP-School\CSC476\Lab1\Project\Debug\Project.exe
