@@ -80,6 +80,19 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	
 }
 
+void GameObject::DoCollisions(std::shared_ptr<GameObject> world)
+{
+	//TODO: Add for loop that loops through all other game objects so we can check for collisions with each
+
+	bool collisionX = bboxCenter.x + bboxSize.x >= world->bboxCenter.x && world->bboxCenter.x + world->bboxSize.x >= bboxCenter.x;
+	bool collisionY = bboxCenter.y + bboxSize.y >= world->bboxCenter.y && world->bboxCenter.y + world->bboxSize.y >= bboxCenter.y;
+	bool collisionZ = bboxCenter.z + bboxSize.z >= world->bboxCenter.z && world->bboxCenter.z + world->bboxSize.z >= bboxCenter.z;
+
+	if (!isTerrain && collisionX && collisionY && collisionZ) {
+		orientation = orientation * -1.0f;
+	}
+}
+
 // Update the center of the bounding box for the model
 void GameObject::updateBbox()
 {

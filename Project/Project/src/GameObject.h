@@ -35,6 +35,7 @@ public:
 	void updateBbox();
 	void initBbox();
 	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
+	void DoCollisions(std::shared_ptr<GameObject> world);
 	~GameObject(); // Destroyer
 
 private:

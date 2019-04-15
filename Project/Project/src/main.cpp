@@ -701,7 +701,6 @@ public:
 	}
 
 
-
 	void render()
 	{
 		// Get current frame buffer size.
@@ -757,14 +756,23 @@ public:
 
 		M->pushMatrix();
 		renderNephs(M, P, 0, 0, 0);
+
+
+		//bunBun->DoCollisions(groundbox);
+
+
 		M->popMatrix();
 
 
 		M->popMatrix(); // Pop Scene Matrix
+
 	}
 
 
 };
+
+
+
 
 int main(int argc, char **argv)
 {
