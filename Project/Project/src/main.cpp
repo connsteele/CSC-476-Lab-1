@@ -405,7 +405,7 @@ public:
 
 		// Setup a game object and its geometry
 		glm::vec3 position = glm::vec3(0.0f);
-		float velocity = 1.0f;
+		float velocity = 1.f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
 		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
 
@@ -682,6 +682,7 @@ public:
 
 		// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
 		bunBun->step(deltaTime, M, P, camLoc, center, up);
+		// bunBun->DoCollisions()
 		//add uniforms to shader
 		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
@@ -756,11 +757,7 @@ public:
 
 		M->pushMatrix();
 		renderNephs(M, P, 0, 0, 0);
-
-
 		//bunBun->DoCollisions(groundbox);
-
-
 		M->popMatrix();
 
 

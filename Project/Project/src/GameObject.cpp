@@ -22,7 +22,7 @@ GameObject::GameObject(const std::string& gameObjName, const std::string& fileNa
 	this->orientation = orient;
 	this->isTerrain = isTerrain;
 
-
+	elapsedTime = 0.0f;
 }
 
 void GameObject::DrawGameObj()
@@ -32,10 +32,14 @@ void GameObject::DrawGameObj()
 }
 
 void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up)
-{
-	static float elapsedTime = 0.0f;
-	elapsedTime += dt;
-	position = velocity * orientation * elapsedTime;
+{ 
+	// elapsedTime += dt;
+
+	DoCollisions(M);
+
+	position += velocity * orientation * dt;
+	printf("Obj Current Pos: x: %f y: %f z: %f\n", position.x, position.y, position.z);
+
 	M->translate(position);
 	//updateBbox(M, P, camLoc, center, up);
 	
@@ -78,19 +82,39 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 			break;*/
 	}
 	
+	
 }
 
-void GameObject::DoCollisions(std::shared_ptr<GameObject> world)
+void GameObject::DoCollisions(std::shared_ptr<MatrixStack> &M) //std::shared_ptr<GameObject> world
 {
+
+	if (position.z > 40.0f) 
+	{
+		orientation = glm::vec3(0, 0, -1);
+	}
+	else if (position.z < -40.0f)
+	{
+		orientation = glm::vec3(0, 0, 1);
+	}
+
+	if (position.x > 40.0f)
+	{
+		orientation = glm::vec3(0, 0, -1);
+	}
+	else if (position.x < -40.0f)
+	{
+		orientation = glm::vec3(0, 0, 1);
+	}
+	
 	//TODO: Add for loop that loops through all other game objects so we can check for collisions with each
 
-	bool collisionX = bboxCenter.x + bboxSize.x >= world->bboxCenter.x && world->bboxCenter.x + world->bboxSize.x >= bboxCenter.x;
+	/*bool collisionX = bboxCenter.x + bboxSize.x >= world->bboxCenter.x && world->bboxCenter.x + world->bboxSize.x >= bboxCenter.x;
 	bool collisionY = bboxCenter.y + bboxSize.y >= world->bboxCenter.y && world->bboxCenter.y + world->bboxSize.y >= bboxCenter.y;
 	bool collisionZ = bboxCenter.z + bboxSize.z >= world->bboxCenter.z && world->bboxCenter.z + world->bboxSize.z >= bboxCenter.z;
 
 	if (!isTerrain && collisionX && collisionY && collisionZ) {
 		orientation = orientation * -1.0f;
-	}
+	}*/
 }
 
 // Update the center of the bounding box for the model
