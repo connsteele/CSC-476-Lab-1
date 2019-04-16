@@ -32,6 +32,7 @@ vector<shared_ptr<GameObject> > sceneActorGameObjs;
 float deltaTime = 0.0f, lastTime = glfwGetTime();
 float lastFrame = 0.0f;
 int nbFrames = 0;
+float elapsedTime = 0.0f;
 
 
 //Camera:
@@ -58,6 +59,11 @@ public:
 	float radius = 1;
 	float x, y, z;
 	const float to_radians = M_PI / 180;
+
+	//Time variable which determines how often bunnies spawn;
+	float bunSpawn = 5.0f; // float P;
+	float bunSpawnReset = bunSpawn; //So we dont need magic number when resetting bunSpawn
+	int bunbunCounter = 3;
 
 	//Mouse info
 	int tempX = 0;
@@ -582,7 +588,7 @@ public:
 				bool wasCollision = checkCollisions(sceneActorGameObjs[i], sceneActorGameObjs[j]);
 
 				if (wasCollision) {
-					printf("Collision occured\n");
+					//printf("Collision occured\n");
 					sceneActorGameObjs[i]->velocity = 0;
 					sceneActorGameObjs[j]->velocity = 0;
 				}
@@ -609,36 +615,53 @@ public:
 		prog->bind(); // Bind the Simple Shader
 
 
-		// Push Object Mat onto Matrix Stack
-		M->pushMatrix();
-		M->loadIdentity();
+		//// Push Object Mat onto Matrix Stack
+		//M->pushMatrix();
+		//M->loadIdentity();
 
-		// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
-		bunBun->step(deltaTime, M, P, camLoc, center, up);
-		// bunBun->DoCollisions()
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		SetMaterial(1);
-		bunBun->DrawGameObj(); // Draw the bunny model and render bbox
-		M->popMatrix();
+		//// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
+		//bunBun->step(deltaTime, M, P, camLoc, center, up);
+		//// bunBun->DoCollisions()
+		////add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
+		//SetMaterial(1);
+		//bunBun->DrawGameObj(); // Draw the bunny model and render bbox
+		//M->popMatrix();
 
-		M->pushMatrix();
-		M->loadIdentity();
+		//M->pushMatrix();
+		//M->loadIdentity();
 
-		// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
-		bunBunTwo->step(deltaTime, M, P, camLoc, center, up);
-		// bunBun->DoCollisions()
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		SetMaterial(1);
-		bunBunTwo->DrawGameObj(); // Draw the bunny model and render bbox
-		M->popMatrix();
+		//// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
+		//bunBunTwo->step(deltaTime, M, P, camLoc, center, up);
+		//// bunBun->DoCollisions()
+		////add uniforms to shader
+		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
+		//SetMaterial(1);
+		//bunBunTwo->DrawGameObj(); // Draw the bunny model and render bbox
+		//M->popMatrix();
+
+		for (int i = 0; i < sceneActorGameObjs.size(); i++) {
+			M->pushMatrix();
+			M->loadIdentity();
+
+			// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
+			sceneActorGameObjs[i]->step(deltaTime, M, P, camLoc, center, up);
+			// bunBun->DoCollisions()
+			//add uniforms to shader
+			glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+			glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+			glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
+			SetMaterial(1);
+			sceneActorGameObjs[i]->DrawGameObj(); // Draw the bunny model and render bbox
+			M->popMatrix();
+		}
 
 
 		prog->unbind(); // Unbind the Simple Shader
@@ -668,7 +691,30 @@ public:
 
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
+		elapsedTime += deltaTime;
 
+
+		//--TODO: Move maybe. Spawns random bunnies
+		bunSpawn -= deltaTime;
+		if (bunSpawn <= 0) {
+			printf("spawn bunny\n");
+			bunSpawn = bunSpawnReset;
+			//Template for random float
+			//float r3 = LO + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(HI-LO)));
+			float randX = -30.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30.0f - -30.0f)));
+			float randZ = -30.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (30.0f - -30.0f)));
+			float randVel = 1.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (8.0f - 1.0f)));
+			
+			string BunName = "bunBun" + to_string(bunbunCounter);
+
+			vec3 position = vec3(randX, 0.0f, randZ);
+
+			vec3 orientation = vec3(0.0f, 0.0f, 1.0f);
+
+			shared_ptr<GameObject> newBunny = make_shared<GameObject>(BunName, "bunny.obj", "resources/", prog, position, randVel, orientation, false);
+			sceneActorGameObjs.push_back(newBunny);
+
+		}
 
 		// Clear framebuffer.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
