@@ -583,6 +583,8 @@ public:
 
 				if (wasCollision) {
 					printf("Collision occured\n");
+					sceneActorGameObjs[i]->velocity = 0;
+					sceneActorGameObjs[j]->velocity = 0;
 				}
 			}
 		}
@@ -700,9 +702,9 @@ public:
 		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
 
 		M->pushMatrix();
-		checkAllGameObjects();
+		//checkAllGameObjects();
 		renderBun(M, P, 0, 0, 0);
-		
+		checkAllGameObjects();
 		//bunBun->DoCollisions(groundbox);
 		M->popMatrix();
 
