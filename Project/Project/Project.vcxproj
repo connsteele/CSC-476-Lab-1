@@ -132,6 +132,7 @@
     <ClCompile Include="src\BaseCode\WindowManager.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ourCoreFuncs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -150,6 +151,7 @@
     <ClInclude Include="src\BaseCode\Texture.h" />
     <ClInclude Include="src\BaseCode\WindowManager.h" />
     <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\ourCoreFuncs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

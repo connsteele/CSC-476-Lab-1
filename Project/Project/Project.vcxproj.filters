@@ -48,6 +48,9 @@
     <ClCompile Include="src\GameObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ourCoreFuncs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="resources\include\tiny_obj_loader.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ourCoreFuncs.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

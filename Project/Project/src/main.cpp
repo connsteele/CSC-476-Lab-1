@@ -15,6 +15,7 @@
 #include "BaseCode/GLTextureWriter.h"
 #include "BaseCode/MatrixStack.h"
 #include "GameObject.h" // Our Game Object Class
+#include "ourCoreFuncs.h"
 
 
 #include <glm/gtc/type_ptr.hpp>
@@ -24,6 +25,8 @@ using namespace std;
 using namespace glm;
 
 //Globals
+
+vector<shared_ptr<GameObject> > sceneActorGameObjs;
 
 //Camera Timing
 float deltaTime = 0.0f, lastTime = glfwGetTime();
@@ -405,9 +408,10 @@ public:
 
 		// Setup a game object and its geometry
 		glm::vec3 position = glm::vec3(0.0f);
-		float velocity = 1.f;
+		float velocity = 4.0f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
 		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+		sceneActorGameObjs.push_back(bunBun);
 
 		// Setup new Ground plane
 		position = glm::vec3(0.0f);
@@ -550,116 +554,21 @@ public:
 		return;
 	}
 
-	//Render out animated Spheres
-	void renderAnimSphere(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV, int offsetX, int offsetZ)
-	{
-		vec3 camLoc;
-		if (surveillancePOV == 1)
-		{
-			camLoc = vec3(0, .75, 9);
-
-		}
-		else  if (surveillancePOV == 0)
-		{
-			camLoc = eye;
-		}
-
-		prog->bind();
-
-		M->pushMatrix();
-		M->loadIdentity();
-		M->translate(vec3(-3.5 + offsetX, 0, 1.85 + offsetZ)); //move the Spheres
-		M->scale(.34);
-		//add uniforms to shader
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		//glUniform3f(prog->getUniform("eye"), 0, 10, 0);
-		//Set up the Lighting Uniforms, Copper for this
-		SetMaterial(0);
-		//draw
-		sphere->draw(prog);
-
-
-
-		//Mid level rotations
-		M->pushMatrix();
-		M->translate(vec3(0, 0, 0)); //move the Spheres
-		M->rotate(-orbRotate * to_radians, vec3(0, 1, 0)); //Animate the orb to rotate
-														   //1st Hierachical Sphere
-		M->translate(vec3(0, 0, 1.5)); //move the Spheres
-		M->scale(.25);
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		//Set up the Lighting Uniforms, Copper for this
-		SetMaterial(2);
-		sphere->draw(prog);
-
-		//2nd Hierachical Sphere
-		M->pushMatrix();
-		M->translate(vec3(0, 0, 4)); //move the Spheres
-		M->rotate(-30, vec3(0, 1, 0));
-		M->scale(.75);
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		//Set up the Lighting Uniforms, Copper for this
-		SetMaterial(2);
-		sphere->draw(prog);
-
-		//orbiting Primitives
-		glBindVertexArray(CylVertexArrayID);
-		M->pushMatrix();
-		//transforms
-		M->rotate(90, vec3(0, 0, 1));
-		M->rotate(-smallRotate, vec3(0, 1, 0));
-		M->translate(vec3(0, 0, 4)); //move the Cyl
-		//send the matrices to the shaders
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, glm::value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, glm::value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		SetMaterial(0);
-		glDrawArrays(GL_TRIANGLES, 0, 180 * 6);
-		M->popMatrix();
-
-		//More orbiting Primitives
-		glBindVertexArray(CylVertexArrayID);
-		M->pushMatrix();
-		//transforms
-		M->rotate(90, vec3(1, 0, 0));
-		M->rotate(smallRotate, vec3(0, 1, 0));
-		M->translate(vec3(0, 0, -8)); //move the Cyl
-		//send the matrices to the shaders
-		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, glm::value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, glm::value_ptr(M->topMatrix()));
-		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		glUniform3f(prog->getUniform("lightSource"), 0, 88, 30);
-		SetMaterial(0);
-		glDrawArrays(GL_TRIANGLES, 0, 180 * 6);
-		M->popMatrix();
-
-		M->popMatrix();
-		M->popMatrix();
-
-		//Final Pop and Unbind
-		M->popMatrix();
-		prog->unbind();
-
-		return;
-	}
 
 	void renderWorldBox() {
 
 	}
 
+	void checkAllGameObjects()
+	{
+		for (int i = 0; i < sceneActorGameObjs.size(); i++)
+		{
+			printf("Yolo %d", i);
+		}
+	}
 
 
-	void renderNephs(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV, int offsetX, int offsetZ)
+	void renderBun(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV, int offsetX, int offsetZ)
 	{
 		vec3 camLoc;
 		if (surveillancePOV == 1)
@@ -672,11 +581,11 @@ public:
 			camLoc = eye;
 		}
 
-		prog->bind();
+		
+		prog->bind(); // Bind the Simple Shader
 
 
-
-		// Bunny
+		// Push Object Mat onto Matrix Stack
 		M->pushMatrix();
 		M->loadIdentity();
 
@@ -693,9 +602,7 @@ public:
 		M->popMatrix();
 
 
-
-
-		prog->unbind();
+		prog->unbind(); // Unbind the Simple Shader
 
 		return;
 
@@ -756,7 +663,8 @@ public:
 		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
 
 		M->pushMatrix();
-		renderNephs(M, P, 0, 0, 0);
+		renderBun(M, P, 0, 0, 0);
+		checkAllGameObjects();
 		//bunBun->DoCollisions(groundbox);
 		M->popMatrix();
 
@@ -765,10 +673,7 @@ public:
 
 	}
 
-
 };
-
-
 
 
 int main(int argc, char **argv)

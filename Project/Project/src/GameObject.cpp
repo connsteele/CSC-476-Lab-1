@@ -37,9 +37,9 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 
 	DoCollisions(M);
 
+	//-- Calculate new position and translate the model
 	position += velocity * orientation * dt;
-	printf("Obj Current Pos: x: %f y: %f z: %f\n", position.x, position.y, position.z);
-
+	// printf("Obj Current Pos: x: %f y: %f z: %f\n", position.x, position.y, position.z);
 	M->translate(position);
 	//updateBbox(M, P, camLoc, center, up);
 	
