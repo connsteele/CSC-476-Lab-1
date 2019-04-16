@@ -416,21 +416,21 @@ public:
 		glm::vec3 position = glm::vec3(0.0f);
 		float velocity = 4.0f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
-		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+		bunBun = make_shared<GameObject>("bunbun", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
 		sceneActorGameObjs.push_back(bunBun);
 
 		//Setup second bunbun
 		position = glm::vec3(0.0f, 0.0f, 30.0f);
 		velocity = 4.0f;
 		orientation = glm::vec3(0.0f, 0.0f, -1.0f);
-		bunBunTwo = make_shared<GameObject>("bunbunTwo", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+		bunBunTwo = make_shared<GameObject>("bunbunTwo", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
 		sceneActorGameObjs.push_back(bunBunTwo);
 
 		// Setup new Ground plane
 		position = glm::vec3(0.0f);
 		velocity = 0.0f;
 		orientation = glm::vec3(0.0f, 0.0f, 0.0f);
-		groundbox = make_shared<GameObject>("groundbox", "cube.obj", resourceDirectory, prog, position, velocity, orientation, true);
+		groundbox = make_shared<GameObject>("groundbox", cube, resourceDirectory, prog, position, velocity, orientation, true);
 
 
 
@@ -711,7 +711,7 @@ public:
 
 			vec3 orientation = vec3(0.0f, 0.0f, 1.0f);
 
-			shared_ptr<GameObject> newBunny = make_shared<GameObject>(BunName, "bunny.obj", "resources/", prog, position, randVel, orientation, false);
+			shared_ptr<GameObject> newBunny = make_shared<GameObject>(BunName, bunnyShape, "resources/", prog, position, randVel, orientation, false);
 			sceneActorGameObjs.push_back(newBunny);
 
 		}

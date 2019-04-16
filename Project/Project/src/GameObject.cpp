@@ -3,14 +3,15 @@
 // Connor Steele and Chris Gix Game Object Implementation
 
 
-GameObject::GameObject(const std::string& gameObjName, const std::string& fileName, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain)
+GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain)
 {
 	this->nameObj = gameObjName;
 	//-- Setup the Model Geometry
-	objModel = std::make_shared<Shape>();
+	/*objModel = std::make_shared<Shape>();
 	objModel->loadMesh(resourceDirectory + fileName);
 	objModel->resize();
-	objModel->init();
+	objModel->init();*/
+	this->objModel = objModel;
 	//-- Setup geometry of the bounding box
 	initBbox();
 
