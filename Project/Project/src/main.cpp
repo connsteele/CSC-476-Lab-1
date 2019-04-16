@@ -26,6 +26,13 @@ using namespace glm;
 
 //Globals
 
+//--- Variables for players bbox 
+GLuint p1_vbo_vertices;
+GLuint p1_ibo_elements;
+vec3 p1_bboxSize, p1_bboxCenter;
+mat4 p1_bboxTransform;
+
+//--- Vector of all actor game objects
 vector<shared_ptr<GameObject> > sceneActorGameObjs;
 
 //Camera Timing
@@ -384,6 +391,43 @@ public:
 		texProg->addUniform("M");
 		texProg->addUniform("V");
 	}
+	
+	void initPlayerBbox()
+	{
+		// Cube 1x1x1, centered on origin
+		GLfloat p1_vertices[] = {
+		  -0.5, -0.5, -0.5, 1.0,
+		   0.5, -0.5, -0.5, 1.0,
+		   0.5,  0.5, -0.5, 1.0,
+		  -0.5,  0.5, -0.5, 1.0,
+		  -0.5, -0.5,  0.5, 1.0,
+		   0.5, -0.5,  0.5, 1.0,
+		   0.5,  0.5,  0.5, 1.0,
+		  -0.5,  0.5,  0.5, 1.0,
+		};
+		//GLuint vbo_vertices;
+		glGenBuffers(1, &p1_vbo_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, p1_vbo_vertices);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(p1_vertices), p1_vertices, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind
+
+		GLushort p1_elements[] = {
+		  0, 1, 2, 3,
+		  4, 5, 6, 7,
+		  0, 4, 1, 5, 2, 6, 3, 7
+		};
+		//GLuint ibo_elements;
+		glGenBuffers(1, &p1_ibo_elements);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, p1_ibo_elements);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(p1_elements), p1_elements, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind
+
+
+		p1_bboxSize = glm::vec3(5.0f, 5.0f, 5.0f);
+		p1_bboxCenter = glm::vec3(5.f/2.f, 5.f/2.f, 5.f/2.f);
+		p1_bboxTransform = glm::translate(glm::mat4(1), p1_bboxCenter) * glm::scale(glm::mat4(1), p1_bboxSize);
+
+	}
 
 	void initGeom(const std::string& resourceDirectory)
 	{
@@ -412,7 +456,10 @@ public:
 		sphere->resize();
 		sphere->init();
 
-		// Setup a game object and its geometry
+		// Setup player bbox
+		initPlayerBbox();
+
+		// Setup a game object
 		glm::vec3 position = glm::vec3(0.0f);
 		float velocity = 4.0f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -528,6 +575,35 @@ public:
 		texProg->unbind();
 	}
 
+	void renderPlayerBbox(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P)
+	{
+		prog->bind();
+		// Recompute the position of the box b4 drawing it
+		p1_bboxCenter = center;
+		p1_bboxTransform = translate(glm::mat4(1), p1_bboxCenter) * glm::scale(glm::mat4(1), p1_bboxSize);
+
+		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(p1_bboxTransform));
+		glBindBuffer(GL_ARRAY_BUFFER, p1_vbo_vertices);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(
+			0,  // attribute
+			4,                  // number of elements per vertex, here (x,y,z,w)
+			GL_FLOAT,           // the type of each element
+			GL_FALSE,           // take our values as-is
+			0,                  // no extra data between each position
+			0                   // offset of first element
+		);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, p1_ibo_elements);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+		glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		glDisableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		prog->unbind();
+	}
 
 	void renderGroundPlane(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV)
 	{
@@ -744,6 +820,9 @@ public:
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		M->pushMatrix(); // Matrix for the Scene
 		renderGroundPlane(M, P, 0); //draw the ground plane
+
+		// Update the position of the players bbox
+		renderPlayerBbox(M, P);
 
 		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
 

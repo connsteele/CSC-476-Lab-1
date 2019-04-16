@@ -6,11 +6,6 @@
 GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain)
 {
 	this->nameObj = gameObjName;
-	//-- Setup the Model Geometry
-	/*objModel = std::make_shared<Shape>();
-	objModel->loadMesh(resourceDirectory + fileName);
-	objModel->resize();
-	objModel->init();*/
 	this->objModel = objModel;
 	//-- Setup geometry of the bounding box
 	initBbox();
@@ -144,6 +139,7 @@ void GameObject::updateBbox()
 
 }
 
+// Might be able to move this somewhere else so it doesn't send the data to the GPU again and again
 void GameObject::initBbox()
 {
 	// Cube 1x1x1, centered on origin
