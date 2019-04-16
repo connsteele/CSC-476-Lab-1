@@ -582,6 +582,19 @@ public:
 		p1_bboxCenter = center;
 		p1_bboxTransform = translate(glm::mat4(1), p1_bboxCenter) * glm::scale(glm::mat4(1), p1_bboxSize);
 
+		//Check Collisions
+		for(int i = 0; i < sceneActorGameObjs.size(); i++){
+			bool collisionX = p1_bboxCenter.x + p1_bboxSize.x >= sceneActorGameObjs[i]->bboxCenter.x && sceneActorGameObjs[i]->bboxCenter.x + sceneActorGameObjs[i]->bboxSize.x >= p1_bboxCenter.x;
+			bool collisionY = p1_bboxCenter.y + p1_bboxSize.y >= sceneActorGameObjs[i]->bboxCenter.y && sceneActorGameObjs[i]->bboxCenter.y + sceneActorGameObjs[i]->bboxSize.y >= p1_bboxCenter.y;
+			bool collisionZ = p1_bboxCenter.z + p1_bboxSize.z >= sceneActorGameObjs[i]->bboxCenter.z && sceneActorGameObjs[i]->bboxCenter.z + sceneActorGameObjs[i]->bboxSize.z >= p1_bboxCenter.z;
+
+			if(collisionX && collisionY && collisionZ){
+				printf("Camera Collision\n");
+			}
+
+			//return collisionX && collisionY && collisionZ;
+		}
+
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(p1_bboxTransform));
 		glBindBuffer(GL_ARRAY_BUFFER, p1_vbo_vertices);
 		glEnableVertexAttribArray(0);
