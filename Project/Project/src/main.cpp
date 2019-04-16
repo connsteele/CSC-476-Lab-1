@@ -417,7 +417,7 @@ public:
 		position = glm::vec3(0.0f, 0.0f, 30.0f);
 		velocity = 4.0f;
 		orientation = glm::vec3(0.0f, 0.0f, -1.0f);
-		bunBunTwo = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+		bunBunTwo = make_shared<GameObject>("bunbunTwo", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
 		sceneActorGameObjs.push_back(bunBunTwo);
 
 		// Setup new Ground plane
@@ -566,7 +566,7 @@ public:
 
 	}
 
-	bool checkCollisions(shared_ptr<GameObject> &objOne, shared_ptr<GameObject> &objTwo) {
+	bool checkCollisions(shared_ptr<GameObject> objOne, shared_ptr<GameObject> objTwo) {
 		bool collisionX = objOne->bboxCenter.x + objOne->bboxSize.x >= objTwo->bboxCenter.x && objTwo->bboxCenter.x + objTwo->bboxSize.x >= objOne->bboxCenter.x;
 		bool collisionY = objOne->bboxCenter.y + objOne->bboxSize.y >= objTwo->bboxCenter.y && objTwo->bboxCenter.y + objTwo->bboxSize.y >= objOne->bboxCenter.y;
 		bool collisionZ = objOne->bboxCenter.z + objOne->bboxSize.z >= objTwo->bboxCenter.z && objTwo->bboxCenter.z + objTwo->bboxSize.z >= objOne->bboxCenter.z;
@@ -578,7 +578,7 @@ public:
 	{
 		for (int i = 0; i < sceneActorGameObjs.size(); i++)
 		{
-			for (int j = 1; j < sceneActorGameObjs.size(); j++) {
+			for (int j = i + 1; j < sceneActorGameObjs.size(); j++) {
 				bool wasCollision = checkCollisions(sceneActorGameObjs[i], sceneActorGameObjs[j]);
 
 				if (wasCollision) {
@@ -700,8 +700,9 @@ public:
 		//renderAnimSphere(M, P, 0, 0, 0); //draw the hierarchical modeled animated spheres
 
 		M->pushMatrix();
-		renderBun(M, P, 0, 0, 0);
 		checkAllGameObjects();
+		renderBun(M, P, 0, 0, 0);
+		
 		//bunBun->DoCollisions(groundbox);
 		M->popMatrix();
 
