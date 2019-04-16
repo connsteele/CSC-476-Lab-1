@@ -77,7 +77,7 @@ public:
 	shared_ptr<Shape> cube;
 	shared_ptr<Shape> sphere;
 
-	shared_ptr<GameObject> bunBun, groundbox;
+	shared_ptr<GameObject> bunBun, groundbox, bunBunTwo;
 
 	// Contains vertex information for OpenGL
 	GLuint VertexArrayID;
@@ -413,6 +413,13 @@ public:
 		bunBun = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
 		sceneActorGameObjs.push_back(bunBun);
 
+		//Setup second bunbun
+		position = glm::vec3(0.0f, 0.0f, 30.0f);
+		velocity = 4.0f;
+		orientation = glm::vec3(0.0f, 0.0f, -1.0f);
+		bunBunTwo = make_shared<GameObject>("bunbun", "bunny.obj", resourceDirectory, prog, position, velocity, orientation, false);
+		sceneActorGameObjs.push_back(bunBunTwo);
+
 		// Setup new Ground plane
 		position = glm::vec3(0.0f);
 		velocity = 0.0f;
@@ -559,14 +566,29 @@ public:
 
 	}
 
+	bool checkCollisions(shared_ptr<GameObject> &objOne, shared_ptr<GameObject> &objTwo) {
+		bool collisionX = objOne->bboxCenter.x + objOne->bboxSize.x >= objTwo->bboxCenter.x && objTwo->bboxCenter.x + objTwo->bboxSize.x >= objOne->bboxCenter.x;
+		bool collisionY = objOne->bboxCenter.y + objOne->bboxSize.y >= objTwo->bboxCenter.y && objTwo->bboxCenter.y + objTwo->bboxSize.y >= objOne->bboxCenter.y;
+		bool collisionZ = objOne->bboxCenter.z + objOne->bboxSize.z >= objTwo->bboxCenter.z && objTwo->bboxCenter.z + objTwo->bboxSize.z >= objOne->bboxCenter.z;
+
+		return collisionX && collisionY && collisionZ;
+	}
+
 	void checkAllGameObjects()
 	{
 		for (int i = 0; i < sceneActorGameObjs.size(); i++)
 		{
-			printf("Yolo %d", i);
+			for (int j = 1; j < sceneActorGameObjs.size(); j++) {
+				bool wasCollision = checkCollisions(sceneActorGameObjs[i], sceneActorGameObjs[j]);
+
+				if (wasCollision) {
+					printf("Collision occured\n");
+				}
+			}
 		}
 	}
 
+	
 
 	void renderBun(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P, int surveillancePOV, int offsetX, int offsetZ)
 	{
@@ -599,6 +621,21 @@ public:
 		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
 		SetMaterial(1);
 		bunBun->DrawGameObj(); // Draw the bunny model and render bbox
+		M->popMatrix();
+
+		M->pushMatrix();
+		M->loadIdentity();
+
+		// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
+		bunBunTwo->step(deltaTime, M, P, camLoc, center, up);
+		// bunBun->DoCollisions()
+		//add uniforms to shader
+		glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+		glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+		glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
+		SetMaterial(1);
+		bunBunTwo->DrawGameObj(); // Draw the bunny model and render bbox
 		M->popMatrix();
 
 
