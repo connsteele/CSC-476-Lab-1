@@ -179,7 +179,8 @@ void GameObject::initBbox()
 	}
 
 	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
-	bboxCenter = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2);
+	//bboxCenter = glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2); // DONT INITIALIZE TO THIS VALUE BC IT WILL MAKE THE BOX GO THE CENTER OF THE WORLD FOR A TINY BIT, ENUFF TO CAUSE COLLISION DETECTION TO TRIGGER
+	bboxCenter = position; // set the center of the box to the position of the game object
 	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
 
 }
