@@ -3,7 +3,7 @@
 // Connor Steele and Chris Gix Game Object Implementation
 
 
-GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool visibleBbox)
+GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape>& objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool visibleBbox)
 {
 	this->nameObj = gameObjName;
 	this->objModel = objModel;
@@ -40,6 +40,15 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	//printf("Obj Current Pos: x: %f y: %f z: %f\n", position.x, position.y, position.z);
 	M->translate(position);
 	//updateBbox(M, P, camLoc, center, up);
+	if (orientation == glm::vec3(0, 0, -1))
+	{
+		M->rotate(180.0f, glm::vec3(0, 1, 0));
+	}
+	else if (orientation == glm::vec3(0, 0, 1))
+	{
+		M->rotate(0.0f, glm::vec3(0, 1, 0));
+	}
+
 	
 	GLfloat min_x, max_x,
 		min_y, max_y,
@@ -76,16 +85,20 @@ void GameObject::DoCollisions(std::shared_ptr<MatrixStack> &M) //std::shared_ptr
 
 	if (position.z > 40.0f) 
 	{
+		
 		orientation = glm::vec3(0, 0, -1);
+
 	}
 	else if (position.z < -40.0f)
 	{
 		orientation = glm::vec3(0, 0, 1);
+
 	}
 
 	if (position.x > 40.0f)
 	{
 		orientation = glm::vec3(0, 0, -1);
+
 	}
 	else if (position.x < -40.0f)
 	{

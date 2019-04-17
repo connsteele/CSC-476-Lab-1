@@ -260,69 +260,6 @@ public:
 		}
 	}
 
-	//helper function to get points for cylinder
-	void getTxTz(float &tx, float &tz, float degrees)
-	{
-		float radians;
-
-		radians = degrees * to_radians;
-		tx = cos(radians);
-		tz = sin(radians);
-	}
-	//helper function to get offset position for cylinder
-	void getTxTzOffset(float &tx2, float &tz2, float degrees, float outernum)
-	{
-		float radians;
-
-		radians = (degrees + outernum)* to_radians;
-		tx2 = cos(radians);
-		tz2 = sin(radians);
-	}
-
-
-	//*create geometry for the cylinder, modified Program 2a code
-	void makeCylinder(std::vector<float> &cylinderBuff)
-	{
-		float tx, tz; //temporary points 
-		float tx2, tz2; //another set of temps for offset points
-		float outernum = 360 / 80; //How much to increment the loop. Should be the num of outer vertices
-
-		for (float degrees = 0.0f; degrees < 360.0f; degrees += outernum)
-		{
-
-			getTxTz(tx, tz, degrees); //calculate the points for the 1st tri
-			getTxTzOffset(tx2, tz2, degrees, outernum); //calculate offset from original degree
-
-														// Add vertices of 1st Triangle to VertBuffer
-			cylinderBuff.push_back(tx2);	// bottom-right
-			cylinderBuff.push_back(-0.3f);
-			cylinderBuff.push_back(tz2);
-
-			cylinderBuff.push_back(tx);		// top-left
-			cylinderBuff.push_back(0.3f);
-			cylinderBuff.push_back(tz);
-
-			cylinderBuff.push_back(tx2);	// top-right
-			cylinderBuff.push_back(0.3f);
-			cylinderBuff.push_back(tz2);
-
-			// Add vertices of 2nd Triangle to VertBuffer
-			cylinderBuff.push_back(tx);		// bottom-left
-			cylinderBuff.push_back(-0.3f);
-			cylinderBuff.push_back(tz);
-
-			cylinderBuff.push_back(tx2);	// bottom-right
-			cylinderBuff.push_back(-0.3f);
-			cylinderBuff.push_back(tz2);
-
-			cylinderBuff.push_back(tx);		// top-left vertex
-			cylinderBuff.push_back(0.3f); //fix the height of the object
-			cylinderBuff.push_back(tz);
-
-		}
-		return;
-	}
-
 	void init(const std::string& resourceDirectory)
 	{
 		int width, height;
@@ -486,27 +423,28 @@ public:
 
 
 		//Cyl Stuff
-		std::vector<float> vertex_cylinder_buffer; //use for the VBO later
-		std::vector<float> normal_cylinder_buffer; //use for the VBO later
+		//std::vector<float> vertex_cylinder_buffer; //use for the VBO later
+		//std::vector<float> normal_cylinder_buffer; //use for the VBO later
+
 		//Initialize the cylinder
 		//VAO
-		glGenVertexArrays(1, &CylVertexArrayID);
+		/*glGenVertexArrays(1, &CylVertexArrayID);
 		glBindVertexArray(CylVertexArrayID);
 		glGenBuffers(1, &CylVertexBufferID);
-		glBindBuffer(GL_ARRAY_BUFFER, CylVertexBufferID);
+		glBindBuffer(GL_ARRAY_BUFFER, CylVertexBufferID);*/
 
 		//VBO
-		makeCylinder(vertex_cylinder_buffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex_cylinder_buffer.size(), &vertex_cylinder_buffer[0], GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(0); // send to location 0 in shader
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		//makeCylinder(vertex_cylinder_buffer);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex_cylinder_buffer.size(), &vertex_cylinder_buffer[0], GL_DYNAMIC_DRAW);
+		//glEnableVertexAttribArray(0); // send to location 0 in shader
+		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 
 		//CREATE A VBO FOR THE NORMALS
-		makeCylinder(normal_cylinder_buffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)*normal_cylinder_buffer.size(), &normal_cylinder_buffer[0], GL_DYNAMIC_DRAW);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // Send to location 1 in shader for normals
+		//makeCylinder(normal_cylinder_buffer);
+		//glBufferData(GL_ARRAY_BUFFER, sizeof(float)*normal_cylinder_buffer.size(), &normal_cylinder_buffer[0], GL_DYNAMIC_DRAW);
+		//glEnableVertexAttribArray(1);
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // Send to location 1 in shader for normals
 
 	}
 
@@ -721,20 +659,24 @@ public:
 			// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
 			sceneActorGameObjs[i]->step(deltaTime, M, P, camLoc, center, up);
 			// bunBun->DoCollisions()
+
+
 			//add uniforms to shader
-			glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-			glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
 			// Set the materials of the bunny depending on if the player has hit it or not
 			if (sceneActorGameObjs[i]->hitByPlayer)
 			{
 				SetMaterial(2);
+				//M->rotate(180.0f, vec3(0, 1, 0));
 				// glUniform1f(prog->getUniform("hit"), 1); //old method
 			}
 			else
 			{
 				SetMaterial(1);
 			}
+			glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
+			glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
+			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+			
 			glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
 			sceneActorGameObjs[i]->DrawGameObj(); // Draw the bunny model and render bbox
 
