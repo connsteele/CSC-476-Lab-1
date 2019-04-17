@@ -17,6 +17,6 @@ void main()
    
 	fragNor = (M * vec4(vertNor, 0.0)).xyz;
    
-   WPos = (M * vertPos).xyz;
+	WPos = (M * vertPos).xyz;
 	
 }

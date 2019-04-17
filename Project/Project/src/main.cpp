@@ -26,6 +26,9 @@ using namespace glm;
 
 //Globals
 
+//---
+int p1Collisions = 0;
+
 //--- Variables for players bbox 
 GLuint p1_vbo_vertices;
 GLuint p1_ibo_elements;
@@ -352,6 +355,7 @@ public:
 		prog->addAttribute("vertPos");
 		prog->addAttribute("vertNor");
 		prog->addUniform("lightSource"); //lighting uniform
+		prog->addUniform("hit"); //Uniform for determining color based on hit or not
 
 		//create two frame buffer objects to toggle between
 		glGenFramebuffers(2, frameBuf);
@@ -423,8 +427,8 @@ public:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind
 
 
-		p1_bboxSize = glm::vec3(5.0f, 5.0f, 5.0f);
-		p1_bboxCenter = glm::vec3(5.f/2.f, 5.f/2.f, 5.f/2.f);
+		p1_bboxSize = glm::vec3(3.0f);
+		p1_bboxCenter = glm::vec3(3.f/2.f);
 		p1_bboxTransform = glm::translate(glm::mat4(1), p1_bboxCenter) * glm::scale(glm::mat4(1), p1_bboxSize);
 
 	}
@@ -460,24 +464,24 @@ public:
 		initPlayerBbox();
 
 		// Setup a game object
-		glm::vec3 position = glm::vec3(0.0f);
+		/*glm::vec3 position = glm::vec3(0.0f);
 		float velocity = 4.0f;
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
 		bunBun = make_shared<GameObject>("bunbun", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
-		sceneActorGameObjs.push_back(bunBun);
+		sceneActorGameObjs.push_back(bunBun);*/
 
 		//Setup second bunbun
-		position = glm::vec3(0.0f, 0.0f, 30.0f);
+		/*position = glm::vec3(0.0f, 0.0f, 30.0f);
 		velocity = 4.0f;
 		orientation = glm::vec3(0.0f, 0.0f, -1.0f);
 		bunBunTwo = make_shared<GameObject>("bunbunTwo", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
-		sceneActorGameObjs.push_back(bunBunTwo);
+		sceneActorGameObjs.push_back(bunBunTwo);*/
 
 		// Setup new Ground plane
-		position = glm::vec3(0.0f);
-		velocity = 0.0f;
-		orientation = glm::vec3(0.0f, 0.0f, 0.0f);
-		groundbox = make_shared<GameObject>("groundbox", cube, resourceDirectory, prog, position, velocity, orientation, true);
+		glm::vec3 position = glm::vec3(0.0f);
+		float velocity = 0.0f;
+		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 0.0f);
+		groundbox = make_shared<GameObject>("groundbox", cube, resourceDirectory, prog, position, velocity, orientation, false);
 
 
 
@@ -588,8 +592,12 @@ public:
 			bool collisionY = p1_bboxCenter.y + p1_bboxSize.y >= sceneActorGameObjs[i]->bboxCenter.y && sceneActorGameObjs[i]->bboxCenter.y + sceneActorGameObjs[i]->bboxSize.y >= p1_bboxCenter.y;
 			bool collisionZ = p1_bboxCenter.z + p1_bboxSize.z >= sceneActorGameObjs[i]->bboxCenter.z && sceneActorGameObjs[i]->bboxCenter.z + sceneActorGameObjs[i]->bboxSize.z >= p1_bboxCenter.z;
 
-			if(collisionX && collisionY && collisionZ){
+			// If there is a collision with a moving object
+			if( !(sceneActorGameObjs[i]->hitByPlayer) && collisionX && collisionY && collisionZ){
 				printf("Camera Collision\n");
+				sceneActorGameObjs[i]->velocity = 0.0f; // Stop the object you collide with
+				p1Collisions += 1; // Increment the number of objects the player has collided with
+				sceneActorGameObjs[i]->hitByPlayer = true;
 			}
 
 			//return collisionX && collisionY && collisionZ;
@@ -671,6 +679,7 @@ public:
 
 	void checkAllGameObjects()
 	{
+		
 		for (int i = 0; i < sceneActorGameObjs.size(); i++)
 		{
 			for (int j = i + 1; j < sceneActorGameObjs.size(); j++) {
@@ -704,36 +713,6 @@ public:
 		prog->bind(); // Bind the Simple Shader
 
 
-		//// Push Object Mat onto Matrix Stack
-		//M->pushMatrix();
-		//M->loadIdentity();
-
-		//// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
-		//bunBun->step(deltaTime, M, P, camLoc, center, up);
-		//// bunBun->DoCollisions()
-		////add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		//SetMaterial(1);
-		//bunBun->DrawGameObj(); // Draw the bunny model and render bbox
-		//M->popMatrix();
-
-		//M->pushMatrix();
-		//M->loadIdentity();
-
-		//// Update the position of the rabbit based on velocity, time elapsed also updates the center of the bbox
-		//bunBunTwo->step(deltaTime, M, P, camLoc, center, up);
-		//// bunBun->DoCollisions()
-		////add uniforms to shader
-		//glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		//glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
-		//glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-		//SetMaterial(1);
-		//bunBunTwo->DrawGameObj(); // Draw the bunny model and render bbox
-		//M->popMatrix();
 
 		for (int i = 0; i < sceneActorGameObjs.size(); i++) {
 			M->pushMatrix();
@@ -746,9 +725,19 @@ public:
 			glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
 			glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
 			glUniformMatrix4fv(prog->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(camLoc, center, up)));
+			// Set the materials of the bunny depending on if the player has hit it or not
+			if (sceneActorGameObjs[i]->hitByPlayer)
+			{
+				SetMaterial(2);
+				// glUniform1f(prog->getUniform("hit"), 1); //old method
+			}
+			else
+			{
+				SetMaterial(1);
+			}
 			glUniform3f(prog->getUniform("lightSource"), 0, 88, 10);
-			SetMaterial(1);
 			sceneActorGameObjs[i]->DrawGameObj(); // Draw the bunny model and render bbox
+
 			M->popMatrix();
 		}
 
@@ -771,9 +760,11 @@ public:
 		float currentFrame = glfwGetTime();
 		float currentTime = glfwGetTime();
 		nbFrames += 1;
-
+		// At intervals print out information to the console
 		if (currentTime - lastTime >= 1.0 ) {
-			printf("MS/FPS: %f    FPS: %f\n", 1000.0 / double(nbFrames) , double(nbFrames));
+			printf("MS/FPS: %f    FPS: %f\n", 1000.0 / double(nbFrames) , double(nbFrames)); // Print out ms/fps and frame rate
+			printf("Objects on the ground: %d\n", sceneActorGameObjs.size()); // Print out the number of objects in the game
+			printf("Objects Collided with %d\n\n", p1Collisions);
 			nbFrames = 0;
 			lastTime += 1.0;
 		}
@@ -785,7 +776,8 @@ public:
 
 		//--TODO: Move maybe. Spawns random bunnies
 		bunSpawn -= deltaTime;
-		if (bunSpawn <= 0) {
+		if (bunSpawn <= 0 && (sceneActorGameObjs.size() < 15)) // Spawn a bunny if the timer is up and there are less than 15 in the scene
+		{
 			printf("spawn bunny\n");
 			bunSpawn = bunSpawnReset;
 			//Template for random float
@@ -800,7 +792,7 @@ public:
 
 			vec3 orientation = vec3(0.0f, 0.0f, 1.0f);
 
-			shared_ptr<GameObject> newBunny = make_shared<GameObject>(BunName, bunnyShape, "resources/", prog, position, randVel, orientation, false);
+			shared_ptr<GameObject> newBunny = make_shared<GameObject>(BunName, bunnyShape, "resources/", prog, position, randVel, orientation, true);
 			sceneActorGameObjs.push_back(newBunny);
 
 		}

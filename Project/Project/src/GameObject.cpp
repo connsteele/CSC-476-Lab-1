@@ -3,10 +3,12 @@
 // Connor Steele and Chris Gix Game Object Implementation
 
 
-GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool isTerrain)
+GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool visibleBbox)
 {
 	this->nameObj = gameObjName;
 	this->objModel = objModel;
+	this->hitByPlayer = false;
+
 	//-- Setup geometry of the bounding box
 	initBbox();
 
@@ -16,7 +18,7 @@ GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape> &o
 	this->position = pos;
 	this->velocity = vel;
 	this->orientation = orient;
-	this->isTerrain = isTerrain;
+	this->visibleBbox = visibleBbox;
 
 	elapsedTime = 0.0f;
 }
@@ -61,22 +63,10 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 		if (modelVertPosBuf[3 * i + 2] < min_z) min_z = modelVertPosBuf[3 * i + 2];
 		if (modelVertPosBuf[3 * i + 2] > max_z) max_z = modelVertPosBuf[3 * i + 2];
 	}
-	// If the game object is terrain move the bounding box up
-	switch (isTerrain)
-	{
-		case true:
-			bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z) * 40.0f; // Fix this magic number, is tied to scale that is set in main for this
-			bboxCenter = position + glm::vec3(0.0, 39, 0.0); // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
-			bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
-			break;
-		case false:
-			bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
-			bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
-			bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
-			break;
-		/*default:
-			break;*/
-	}
+
+	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+	bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
+	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
 	
 	
 }
@@ -102,41 +92,34 @@ void GameObject::DoCollisions(std::shared_ptr<MatrixStack> &M) //std::shared_ptr
 		orientation = glm::vec3(0, 0, 1);
 	}
 	
-	//TODO: Add for loop that loops through all other game objects so we can check for collisions with each
-
-	/*bool collisionX = bboxCenter.x + bboxSize.x >= world->bboxCenter.x && world->bboxCenter.x + world->bboxSize.x >= bboxCenter.x;
-	bool collisionY = bboxCenter.y + bboxSize.y >= world->bboxCenter.y && world->bboxCenter.y + world->bboxSize.y >= bboxCenter.y;
-	bool collisionZ = bboxCenter.z + bboxSize.z >= world->bboxCenter.z && world->bboxCenter.z + world->bboxSize.z >= bboxCenter.z;
-
-	if (!isTerrain && collisionX && collisionY && collisionZ) {
-		orientation = orientation * -1.0f;
-	}*/
 }
 
 // Update the center of the bounding box for the model
 void GameObject::updateBbox()
 {
-	glUniformMatrix4fv(curShaderProg->getUniform("M"), 1, GL_FALSE, value_ptr(bboxTransform));
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		0,  // attribute
-		4,                  // number of elements per vertex, here (x,y,z,w)
-		GL_FLOAT,           // the type of each element
-		GL_FALSE,           // take our values as-is
-		0,                  // no extra data between each position
-		0                   // offset of first element
-	);
+	if (visibleBbox)
+	{ 
+		glUniformMatrix4fv(curShaderProg->getUniform("M"), 1, GL_FALSE, value_ptr(bboxTransform));
+		glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(
+			0,  // attribute
+			4,                  // number of elements per vertex, here (x,y,z,w)
+			GL_FLOAT,           // the type of each element
+			GL_FALSE,           // take our values as-is
+			0,                  // no extra data between each position
+			0                   // offset of first element
+		);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+		glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+		glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+		glDisableVertexAttribArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 }
 
 // Might be able to move this somewhere else so it doesn't send the data to the GPU again and again

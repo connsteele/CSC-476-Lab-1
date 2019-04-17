@@ -53,7 +53,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="resources\mirror_frag.glsl">
       <Filter>Resource Files</Filter>
     </None>
@@ -66,6 +65,7 @@
     <None Include="resources\simple_vert.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\BaseCode\GLSL.h">
