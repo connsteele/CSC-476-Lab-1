@@ -71,7 +71,7 @@ public:
 	const float to_radians = M_PI / 180;
 
 	//Time variable which determines how often bunnies spawn;
-	float bunSpawn = 5.0f; // float P;
+	float bunSpawn = 4.0f; // float P;
 	float bunSpawnReset = bunSpawn; //So we dont need magic number when resetting bunSpawn
 	int bunbunCounter = 3;
 
@@ -660,7 +660,7 @@ public:
 
 		//--TODO: Move maybe. Spawns random bunnies
 		bunSpawn -= deltaTime;
-		if (bunSpawn <= 0 && (sceneActorGameObjs.size() < 51)) // Spawn a bunny if the timer is up and there are less than 25 in the scene
+		if (bunSpawn <= 0 && (sceneActorGameObjs.size() < 40)) // Spawn a bunny if the timer is up and there are less than 25 in the scene
 		{
 			printf("spawn bunny\n");
 			bunSpawn = bunSpawnReset;
