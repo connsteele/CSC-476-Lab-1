@@ -32,7 +32,7 @@ public:
 
 	GameObject(const std::string& name, std::shared_ptr<Shape>& objModel, const std::string& resourceDirectory, std::shared_ptr<Program> curShaderProg, glm::vec3 pos, float vel, glm::vec3 orient, bool visibleBbox);
 	void DrawGameObj();
-	void updateBbox();
+	void renderBbox();
 	void initBbox();
 	void step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up);
 	void DoCollisions(std::shared_ptr<MatrixStack> &M); //std::shared_ptr<GameObject> world

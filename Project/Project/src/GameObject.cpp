@@ -26,7 +26,7 @@ GameObject::GameObject(const std::string& gameObjName, std::shared_ptr<Shape>& o
 void GameObject::DrawGameObj()
 {
 	objModel->draw(curShaderProg);
-	updateBbox();
+	renderBbox();
 }
 
 void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr<MatrixStack> &P, glm::vec3 camLoc, glm::vec3 center, glm::vec3 up)
@@ -39,7 +39,8 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 	position += velocity * orientation * dt;
 	//printf("Obj Current Pos: x: %f y: %f z: %f\n", position.x, position.y, position.z);
 	M->translate(position);
-	//updateBbox(M, P, camLoc, center, up);
+
+	//-- Check the orientation of the game object and rotate the mesh to match its orientation
 	if (orientation == glm::vec3(0, 0, -1))
 	{
 		M->rotate(180.0f, glm::vec3(0, 1, 0));
@@ -49,66 +50,28 @@ void GameObject::step(float dt, std::shared_ptr<MatrixStack> &M, std::shared_ptr
 		M->rotate(0.0f, glm::vec3(0, 1, 0));
 	}
 
-	
-	GLfloat min_x, max_x,
-		min_y, max_y,
-		min_z, max_z;
-	// Get the position buffer from the model
-	std::vector<float> modelVertPosBuf = objModel->getPosBuf();
-	// Set up initial Values
-	min_x = max_x = modelVertPosBuf[0];
-	min_y = max_y = modelVertPosBuf[1];
-	min_z = max_z = modelVertPosBuf[2];
-
-	// Walk thru all models vertices and fit mins and maxes
-	for (size_t i = 0; i < modelVertPosBuf.size() / 3; i++)
-	{
-		if (modelVertPosBuf[3 * i + 0] < min_x) min_x = modelVertPosBuf[3 * i + 0];
-		if (modelVertPosBuf[3 * i + 0] > max_x) max_x = modelVertPosBuf[3 * i + 0];
-
-		if (modelVertPosBuf[3 * i + 1] < min_y) min_y = modelVertPosBuf[3 * i + 1];
-		if (modelVertPosBuf[3 * i + 1] > max_y) max_y = modelVertPosBuf[3 * i + 1];
-
-		if (modelVertPosBuf[3 * i + 2] < min_z) min_z = modelVertPosBuf[3 * i + 2];
-		if (modelVertPosBuf[3 * i + 2] > max_z) max_z = modelVertPosBuf[3 * i + 2];
-	}
-
-	bboxSize = glm::vec3(max_x - min_x, max_y - min_y, max_z - min_z);
+	//--- Recompute bbox center and transformation matrix
 	bboxCenter = position; // used to be glm::vec3((min_x + max_x) / 2, (min_y + max_y) / 2, (min_z + max_z) / 2)
 	bboxTransform = glm::translate(glm::mat4(1), bboxCenter) * glm::scale(glm::mat4(1), bboxSize);
 	
 	
 }
 
+// Check for exiting ground plane, if so flip the orientation of the bunny
 void GameObject::DoCollisions(std::shared_ptr<MatrixStack> &M) //std::shared_ptr<GameObject> world
 {
 
-	if (position.z > 40.0f) 
+	if (position.z > 40.0f || position.z < -40.0f || position.x > 40.0f || position.x < -40.0f)
 	{
-		
-		orientation = glm::vec3(0, 0, -1);
+		// Invert the z component of the orientation vector
+		this->orientation = glm::vec3(orientation.x, orientation.y, -1.f * orientation.z);
 
-	}
-	else if (position.z < -40.0f)
-	{
-		orientation = glm::vec3(0, 0, 1);
-
-	}
-
-	if (position.x > 40.0f)
-	{
-		orientation = glm::vec3(0, 0, -1);
-
-	}
-	else if (position.x < -40.0f)
-	{
-		orientation = glm::vec3(0, 0, 1);
 	}
 	
 }
 
 // Update the center of the bounding box for the model
-void GameObject::updateBbox()
+void GameObject::renderBbox()
 {
 	if (visibleBbox)
 	{ 

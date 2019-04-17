@@ -116,7 +116,7 @@ public:
 	// Data necessary to give our triangle to OpenGL
 	GLuint CylVertexBufferID;
 
-	bool FirstTime = true;
+	// bool FirstTime = true;
 
 
 	float cTheta = 0;
@@ -376,7 +376,7 @@ public:
 		//Initialize the geometry to render a quad to the screen
 		initQuad();
 
-		// Initialize the obj mesh VBOs etc
+		// Initialize the bunny obj mesh VBOs etc
 		bunnyShape = make_shared<Shape>();
 		bunnyShape->loadMesh(resourceDirectory + "/bunny.obj");
 		bunnyShape->resize();
@@ -389,8 +389,6 @@ public:
 		cube->init();
 
 
-
-
 		// Initialize the sphere OBJ model
 		sphere = make_shared<Shape>();
 		sphere->loadMesh(resourceDirectory + "/sphere.obj");
@@ -400,19 +398,6 @@ public:
 		// Setup player bbox
 		initPlayerBbox();
 
-		// Setup a game object
-		/*glm::vec3 position = glm::vec3(0.0f);
-		float velocity = 4.0f;
-		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 1.0f);
-		bunBun = make_shared<GameObject>("bunbun", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
-		sceneActorGameObjs.push_back(bunBun);*/
-
-		//Setup second bunbun
-		/*position = glm::vec3(0.0f, 0.0f, 30.0f);
-		velocity = 4.0f;
-		orientation = glm::vec3(0.0f, 0.0f, -1.0f);
-		bunBunTwo = make_shared<GameObject>("bunbunTwo", bunnyShape, resourceDirectory, prog, position, velocity, orientation, false);
-		sceneActorGameObjs.push_back(bunBunTwo);*/
 
 		// Setup new Ground plane
 		glm::vec3 position = glm::vec3(0.0f);
@@ -420,31 +405,6 @@ public:
 		glm::vec3 orientation = glm::vec3(0.0f, 0.0f, 0.0f);
 		groundbox = make_shared<GameObject>("groundbox", cube, resourceDirectory, prog, position, velocity, orientation, false);
 
-
-
-		//Cyl Stuff
-		//std::vector<float> vertex_cylinder_buffer; //use for the VBO later
-		//std::vector<float> normal_cylinder_buffer; //use for the VBO later
-
-		//Initialize the cylinder
-		//VAO
-		/*glGenVertexArrays(1, &CylVertexArrayID);
-		glBindVertexArray(CylVertexArrayID);
-		glGenBuffers(1, &CylVertexBufferID);
-		glBindBuffer(GL_ARRAY_BUFFER, CylVertexBufferID);*/
-
-		//VBO
-		//makeCylinder(vertex_cylinder_buffer);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vertex_cylinder_buffer.size(), &vertex_cylinder_buffer[0], GL_DYNAMIC_DRAW);
-		//glEnableVertexAttribArray(0); // send to location 0 in shader
-		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-
-		//CREATE A VBO FOR THE NORMALS
-		//makeCylinder(normal_cylinder_buffer);
-		//glBufferData(GL_ARRAY_BUFFER, sizeof(float)*normal_cylinder_buffer.size(), &normal_cylinder_buffer[0], GL_DYNAMIC_DRAW);
-		//glEnableVertexAttribArray(1);
-		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0); // Send to location 1 in shader for normals
 
 	}
 
@@ -498,24 +458,6 @@ public:
 		}
 	}
 
-
-	void renderTV(shared_ptr<MatrixStack> &P, shared_ptr<MatrixStack> &M, GLuint tex)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, tex);
-
-		texProg->bind();
-		glUniformMatrix4fv(texProg->getUniform("V"), 1, GL_FALSE, value_ptr(lookAt(eye, center, up)));
-		glUniform1i(texProg->getUniform("tex"), 0);
-		glUniformMatrix4fv(texProg->getUniform("P"), 1, GL_FALSE, value_ptr(P->topMatrix()));
-		glUniformMatrix4fv(texProg->getUniform("M"), 1, GL_FALSE, value_ptr(M->topMatrix()));
-		glEnableVertexAttribArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		glDisableVertexAttribArray(0);
-		texProg->unbind();
-	}
 
 	void renderPlayerBbox(shared_ptr<MatrixStack> &M, shared_ptr<MatrixStack> &P)
 	{
@@ -718,7 +660,7 @@ public:
 
 		//--TODO: Move maybe. Spawns random bunnies
 		bunSpawn -= deltaTime;
-		if (bunSpawn <= 0 && (sceneActorGameObjs.size() < 15)) // Spawn a bunny if the timer is up and there are less than 15 in the scene
+		if (bunSpawn <= 0 && (sceneActorGameObjs.size() < 51)) // Spawn a bunny if the timer is up and there are less than 25 in the scene
 		{
 			printf("spawn bunny\n");
 			bunSpawn = bunSpawnReset;
