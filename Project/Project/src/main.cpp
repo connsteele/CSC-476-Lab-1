@@ -1,5 +1,4 @@
 #include <iostream>
-#define _USE_MATH_DEFINES //use to access M_PI
 #include "math.h"
 #include "glad/glad.h"
 
@@ -52,11 +51,6 @@ vec3 up = vec3(0, 1, 0);
 vec3 center;
 //const vec3 movespd = vec3(.2);	// movespd for each keypress. equivalent to .2, .2, .2
 
-//Animation:
-float orbRotate = 0.0;
-float smallRotate = 0.0;
-float bunnyRotate = 0.0;
-
 
 class Application : public EventCallbacks
 {
@@ -93,28 +87,12 @@ public:
 	shared_ptr<Shape> cube;
 	shared_ptr<Shape> sphere;
 
-	shared_ptr<GameObject> bunBun, groundbox, bunBunTwo;
-
-	// Contains vertex information for OpenGL
-	GLuint VertexArrayID;
-
-	// Data necessary to give our triangle to OpenGL
-	GLuint VertexBufferID;
-
-	//geometry for texture render
-	GLuint quad_VertexArrayID;
-	GLuint quad_vertexbuffer;
+	shared_ptr<GameObject> groundbox;
 
 	//reference to texture FBO
 	GLuint frameBuf[2];
 	GLuint texBuf[2];
 	GLuint depthBuf;
-
-	// Contains vertex information for OpenGL
-	GLuint CylVertexArrayID;
-
-	// Data necessary to give our triangle to OpenGL
-	GLuint CylVertexBufferID;
 
 	// bool FirstTime = true;
 
@@ -373,9 +351,6 @@ public:
 	void initGeom(const std::string& resourceDirectory)
 	{
 
-		//Initialize the geometry to render a quad to the screen
-		initQuad();
-
 		// Initialize the bunny obj mesh VBOs etc
 		bunnyShape = make_shared<Shape>();
 		bunnyShape->loadMesh(resourceDirectory + "/bunny.obj");
@@ -406,28 +381,6 @@ public:
 		groundbox = make_shared<GameObject>("groundbox", cube, resourceDirectory, prog, position, velocity, orientation, false);
 
 
-	}
-
-	/**** geometry set up for a quad *****/
-	void initQuad()
-	{
-		//now set up a simple quad for rendering FBO
-		glGenVertexArrays(1, &quad_VertexArrayID);
-		glBindVertexArray(quad_VertexArrayID);
-
-		static const GLfloat g_quad_vertex_buffer_data[] =
-		{
-			-1.0f, -1.0f, 0.0f,
-			 1.0f, -1.0f, 0.0f,
-			-1.0f,  1.0f, 0.0f,
-			-1.0f,  1.0f, 0.0f,
-			 1.0f, -1.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f,
-		};
-
-		glGenBuffers(1, &quad_vertexbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, quad_vertexbuffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(g_quad_vertex_buffer_data), g_quad_vertex_buffer_data, GL_STATIC_DRAW);
 	}
 
 	/* Helper function to create the framebuffer object and
@@ -479,8 +432,6 @@ public:
 				p1Collisions += 1; // Increment the number of objects the player has collided with
 				sceneActorGameObjs[i]->hitByPlayer = true;
 			}
-
-			//return collisionX && collisionY && collisionZ;
 		}
 
 		glUniformMatrix4fv(prog->getUniform("M"), 1, GL_FALSE, value_ptr(p1_bboxTransform));
@@ -544,10 +495,6 @@ public:
 		return;
 	}
 
-
-	void renderWorldBox() {
-
-	}
 
 	bool checkCollisions(shared_ptr<GameObject> objOne, shared_ptr<GameObject> objTwo) {
 		bool collisionX = objOne->bboxCenter.x + objOne->bboxSize.x >= objTwo->bboxCenter.x && objTwo->bboxCenter.x + objTwo->bboxSize.x >= objOne->bboxCenter.x;
@@ -769,38 +716,6 @@ int main(int argc, char **argv)
 
 		// Poll for and process events.
 		glfwPollEvents();
-
-		//update spinning Orbs
-		if (orbRotate == 360.0)
-		{
-			orbRotate = 0.0;
-
-		}
-		else
-		{
-			orbRotate += 2.0;
-		}
-		if (smallRotate == 360.0)
-		{
-			smallRotate = 0.0;
-
-		}
-		else
-		{
-			smallRotate += 0.1;
-		}
-
-		//update spinning Bunnies
-
-		if (bunnyRotate == 360.0)
-		{
-			bunnyRotate = 0.0;
-
-		}
-		else
-		{
-			bunnyRotate += 0.025;
-		}
 
 	}
 
