@@ -1,4 +1,5 @@
 #include <iostream>
+#define _USE_MATH_DEFINES //use to access M_PI
 #include "math.h"
 #include "glad/glad.h"
 
@@ -6,6 +7,7 @@
 //#include "tiny_obj_loader.h"
 //#define STB_IMAGE_IMPLEMENTATION
 //#include "stb_image.h"
+
 
 #include "BaseCode/GLSL.h"
 #include "BaseCode/Program.h"
